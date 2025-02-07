@@ -1,0 +1,30 @@
+/* Style sidebars/well panels */
+  
+  
+  .well  { background-color: #ffffff; border: 0 solid #336699;
+      padding: 5px; box-shadow: none; }
+
+/*
+  .btn {color: #336699;}
+      .btn-default
+    .shiny-download-link
+    .shiny-bound-output
+    */
+      
+      .shiny-download-link, .shiny-download-link:hover {border-color: #3F3685;}
+          
+          /* Navigation bar following PHS colour scheme */    
+          .navbar-default {color: #ffffff; background-color: #433684; }
+              .nav-pills > li > a { color: #433684; background-color: #ffffff;}
+                  
+                  .navbar-default .navbar-brand, .navbar-default:hover .navbar-brand:hover, .navbar-brand, .nav-pills, .nav-pills:hover {color: #433684; background-color: #ffffff}
+                      
+                      .navbar-default .navbar-nav > li > a {color: #ffffff;}
+                          
+                          .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover, .nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+                            color: #ffffff;
+                              background-color: #312760;
+                          }
+                        
+                        .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .nav-pills > li > a:hover,  .nav-pills > li > a:focus {
+                          color: #ffffff; background-color: #5343a3;}
