@@ -12,6 +12,9 @@
 # 1. Load Scripts called outside App ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
+# Not In Function
+`%notin%` <- Negate(`%in%`)
+
 # Allows for the use of shiny alerts for notifications
 shinyalert::useShinyalert(force = TRUE)
 
