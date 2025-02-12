@@ -1,24 +1,29 @@
 # sdcshinyapp
-Shiny App for performing Statistical Disclosure Control (SDC)
+This package runs a Shiny app that is used to perform statistical disclosure control (SDC).
 
-# Installation
-To install **sdcshinyapp**, the package **remotes** is required, and can be installed using:-
+## Installation
+To install `{sdcshinyapp}`, the `{remotes}` package is required.
+```r
+install.packages("remotes")
+```
 
-- **install.packages("remotes")**
+`{sdcshinyapp}` can then be installed directly from GitHub.
+```r
+remotes::install_github("Public-Health-Scotland/sdcshinyapp")
+```
 
-The **sdcshinyapp** package can then be installed from Github using:-
+## Using sdcshinyapp
+To see the documentation for any functions or included datasets, you can run `?sdcshinyapp::function_name` or `?sdcshinyapp::datasetname` in the console after installing the package.
 
-- **remotes::install_github("Public-Health-Scotland/sdcshinyapp")**
+First, load `{sdcshinyapp}`
 
-# Using sdcshinyapp
-Load **sdcshinyapp** using **library()**:
+```r
+library(sdcshinyapp)
+```
 
-- **library(sdcshinyapp)**
+To run the shiny app locally.
+```r
+run_app()
+```
 
-To see the documentation for any sdcshinyapp functions or datasets, type **?sdcshinyapp::function_name** or **?sdcshinyapp::datasetname** into the RStudio console after loading the package.
-
-To run the SDC App, use the following code:-
-
-- **sdcshinyapp::run_app()**
-
-Instruction on how to use the SDC App are given in the **Home** Tab within the **App Instructions** Sub-Tab.
+Instructions on how to use the SDC App are given in the **Home** tab within the **App Instructions** subtab.
