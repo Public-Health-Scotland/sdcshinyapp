@@ -29,7 +29,7 @@ data <- shiny::reactive({
 
   # Upload File
   switch(ext,
-         csv = dplyr::as_tibble(readr::read.csv(input$upload$datapath, sep = ",",
+         csv = dplyr::as_tibble(readr::read_csv(input$upload$datapath, sep = ",",
                                   quote = '"')),
          xlsx = readxl::read_excel(input$upload$datapath),
          xls = readxl::read_xls(input$upload$datapath),
