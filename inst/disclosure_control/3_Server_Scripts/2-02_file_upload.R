@@ -29,8 +29,7 @@ data <- shiny::reactive({
 
   # Upload File
   switch(ext,
-         csv = dplyr::as_tibble(readr::read_csv(input$upload$datapath, sep = ",",
-                                  quote = '"')),
+         csv = dplyr::as_tibble(readr::read_csv(input$upload$datapath)),
          xlsx = readxl::read_excel(input$upload$datapath),
          xls = readxl::read_xls(input$upload$datapath),
          shiny::validate("Invalid file; Please upload a .csv or .xlsx/.xls file")
