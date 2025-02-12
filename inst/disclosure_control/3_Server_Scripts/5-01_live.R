@@ -79,7 +79,7 @@ output$downloadData <- shiny::downloadHandler(
 
     if (input$upload$type == "text/csv") {
 
-      readr::write_csv(Final, fname, row.names = FALSE)
+      utils::write.csv(Final, fname, row.names = FALSE)
 
       } else if (input$upload$type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
 
@@ -97,7 +97,7 @@ output$downloadData <- shiny::downloadHandler(
 
           } else {
 
-            readr::write_csv(Final, fname, row.names = FALSE)
+            utils::write.csv(Final, fname, row.names = FALSE)
 
           }
 
