@@ -16,7 +16,7 @@
 shiny::observe({
 
   # Stores all variable names in App data apart from Serial - this function is in a external script
-  cb_options <- SelectBox_Update(App_data$values)
+  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
 
   # Update Selectbox
   shiny::updateSelectInput(session, "Variable_Convert",
@@ -129,7 +129,7 @@ output$convert_data <- DT::renderDataTable({
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
 
   # Data visualisation is achieved via a function inside a external script.
-  convert_data <- Table_Render(App_data$values,cb)
+  convert_data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
 })
 
