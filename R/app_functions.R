@@ -1,10 +1,10 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-#Run on Posit version: 4.1.2
-#Last updated: 02 Oct 2024
-#By: Robert Mitchell
-#Script: app_functions.R
-#Purpose: Contains all functions created specifically for a Shiny App
+# Run on Posit version: 4.1.2
+# Last updated: 02 Oct 2024
+# By: Robert Mitchell
+# Script: app_functions.R
+# Purpose: Contains all functions created specifically for a Shiny App
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
@@ -21,26 +21,26 @@
 #' @export
 #'
 #' @examples
-Table_Render <- function(dataset,cb){
-
-  output_data <- DT::datatable(data = dataset,
-                               escape = FALSE,
-                               rownames = FALSE,
-                               class="compact stripe hover",
-                               selection = 'none',
-                               options = list(
-                                 rowsGroup = list(0),
-                                 drawCallback =  cb,
-                                 columnDefs = list(
-                                   list(className = 'dt-center', targets = "_all")
-                                 ),
-                                 pageLength = 10,
-                                 dom = 'Bfrtip'
-                               ))|>
+Table_Render <- function(dataset, cb) {
+  output_data <- DT::datatable(
+    data = dataset,
+    escape = FALSE,
+    rownames = FALSE,
+    class = "compact stripe hover",
+    selection = "none",
+    options = list(
+      rowsGroup = list(0),
+      drawCallback = cb,
+      columnDefs = list(
+        list(className = "dt-center", targets = "_all")
+      ),
+      pageLength = 10,
+      dom = "Bfrtip"
+    )
+  ) |>
     sparkline::spk_add_deps()
 
   return(output_data)
-
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -56,20 +56,18 @@ Table_Render <- function(dataset,cb){
 #' @export
 #'
 #' @examples
-SelectBox_Update <- function(SDC_data){
-
+SelectBox_Update <- function(SDC_data) {
   # Check if data is given
   shiny::req(SDC_data)
 
   dsnames <- names(SDC_data) # Extracts Column Names
-  dsnames <- dsnames[!dsnames %in% c("Serial")]        # Remove Serial Number Option
+  dsnames <- dsnames[!dsnames %in% c("Serial")] # Remove Serial Number Option
 
   # Select column names as options for checkbox
   cb_options <- list()
-  cb_options[ dsnames] <- dsnames
+  cb_options[dsnames] <- dsnames
 
   return(cb_options)
-
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
