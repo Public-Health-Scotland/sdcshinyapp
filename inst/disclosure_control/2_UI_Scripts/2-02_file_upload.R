@@ -42,7 +42,7 @@ shiny::tabPanel("File Upload",
 
              # Output: Summary of distribution for File Input
              shiny::h2(shiny::strong("Data Summary")),
-             verbatimTextOutput("upload_summary_dist"),
+             shiny::verbatimTextOutput("upload_summary_dist"),
 
              shiny::br()
 
