@@ -15,7 +15,7 @@
 # Primary Suppression Selectbox Update
 shiny::observe({
 
-  cb_options <- SelectBox_Update(App_data$values)
+  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
 
   # Update Selectbox
   shiny::updateSelectInput(session, "Disc_Variables_Pri_Supp",
@@ -79,7 +79,7 @@ shiny::observeEvent(
     })
 
     # Primary Suppression
-    App_data$values <- Stat_Primary_Supress(temp_pri_supp, input$Disc_Variables_Pri_Supp,input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
+    App_data$values <- sdcshinyapp::Stat_Primary_Supress(temp_pri_supp, input$Disc_Variables_Pri_Supp,input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
 
     # Clear Non-Suppressed Data
     temp_pri_supp <- NULL
@@ -98,7 +98,7 @@ shiny::observeEvent(
   input$pri_sec_sup, {
 
     # Ensure that variables are selected for primary & secondary suppression
-    if (is.null(input$Disc_Variables_Pri_Supp) | is.null(input$Disc_Variables_Secondary_Supp)){
+    if (is.null(input$Disc_Variables_Pri_Supp) | is.null(input$Disc_Variables_Secondary_Supp)) {
 
       # Error Notification indicating that variables should be selected for primary & secondary suppression
       shinyalert::shinyalert(title = "There is no variables selected for primary and/or secondary suppression.",
@@ -126,7 +126,7 @@ shiny::observeEvent(
     })
 
     # Primary & Secondary Suppression
-    App_data$values <- Stat_Secondary_Supress(temp_supp, input$Disc_Variables_Pri_Supp, input$Disc_Variables_Secondary_Supp, input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
+    App_data$values <- sdcshinyapp::Stat_Secondary_Supress(temp_supp, input$Disc_Variables_Pri_Supp, input$Disc_Variables_Secondary_Supp, input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
 
     # Clear Non-Suppressed Data
     temp_supp <- NULL
@@ -143,7 +143,7 @@ output$Suppress_data <- DT::renderDataTable({
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
 
   # Data visualisation is achieved via a function inside a external script.
-  Suppressed_data <- Table_Render(App_data$values,cb)
+  Suppressed_data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
 })
 

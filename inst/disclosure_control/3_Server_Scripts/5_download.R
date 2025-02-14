@@ -16,7 +16,7 @@ output$Final_data <- DT::renderDataTable({
 
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
 
-  final <- Table_Render(App_data$values,cb)
+  final <- sdcshinyapp::Table_Render(App_data$values,cb)
 
   })
 

@@ -36,7 +36,7 @@ shiny::tabPanel("Useful Links for SDC",
              shiny::p("For further information please see",
                       shiny::a(href = "http://spark.publichealthscotland.org/corporate-guidance/statistical-governance/statistical-disclosure-control/",
                                "Statistical Disclosure Control - Statistical Governance - Corporate guidance - The Spark (publichealthscotland.org)"),
-                      "and always complete your ", a(href = "http://spark.publichealthscotland.org/downloads/disclosure-risk-assessment-form/",
+                      "and always complete your ", shiny::a(href = "http://spark.publichealthscotland.org/downloads/disclosure-risk-assessment-form/",
                       "Disclosure risk assessment form - Downloads - The Spark (publichealthscotland.org)"), "when considering disclosure control.")
 
              )

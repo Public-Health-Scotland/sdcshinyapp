@@ -51,13 +51,13 @@ shiny::tabPanel("Training Data",
 
              # Output: Summary of distribution for File Input
              shiny::h2(shiny::strong("Data Summary")),
-             verbatimTextOutput("Train_summary_dist"),
+             shiny::verbatimTextOutput("Train_summary_dist"),
 
              shiny::br(),
 
              # Output: Summary of Missing Values for File Input
              shiny::h2(strong("Percentage of Missing Values for each Variable")),
-             verbatimTextOutput("Train_summary_missing") # Shows percentage of missing values by column
+             shiny::verbatimTextOutput("Train_summary_missing") # Shows percentage of missing values by column
 
              )
 

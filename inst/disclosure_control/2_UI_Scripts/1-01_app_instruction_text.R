@@ -64,7 +64,7 @@ shiny::tabPanel("App Instructions",
                     # Data Process Subsection
                     shiny::h3("Step 1c - Data Processing"),
 
-                    shiny::p("If no data processing is required, step 1c can be skipped. For variable conversion, in the ", strong("Choose Variable to Convert"),
+                    shiny::p("If no data processing is required, step 1c can be skipped. For variable conversion, in the ", shiny::strong("Choose Variable to Convert"),
                              "select box, choose the variable to be converted. Once the variable has been selected, press one of the convert buttons. This will
                               ensure that the variables selected are transformed into either a numeric variable or a character variable."),
 

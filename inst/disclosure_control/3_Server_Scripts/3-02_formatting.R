@@ -49,7 +49,7 @@ shiny::observeEvent(
       })
 
     # Store Serial Numbers
-    Serial_Removed$data <- temp|>
+    Serial_Removed$data <- temp |>
       dplyr::select(Serial)
 
     # Remove Serial Number
@@ -66,7 +66,7 @@ shiny::observeEvent(
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 # Re-add with button press
-observeEvent(
+shiny::observeEvent(
 
   # Re-add Serial Number with button press
   input$re_add_ser, {
@@ -109,7 +109,7 @@ observeEvent(
 
     # Re-add Serial number
     App_data$values <- App_data$values|>
-      cbind(Serial_Removed$data)|>
+      cbind(Serial_Removed$data) |>
       dplyr::select(Serial,dplyr::everything())
 
     # Clear Stored Serial Number
@@ -126,7 +126,7 @@ observeEvent(
 shiny::observe({
 
   # Stores all variable names in App data apart from Serial - this function is in a external script
-  cb_options <- SelectBox_Update(App_data$values)
+  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
 
   # Update Selectbox
   shiny::updateSelectInput(session, "keyvariableId",
@@ -141,7 +141,7 @@ shiny::observe({
 shiny::observe({
 
   # Update Selectbox
-  cb_options <- SelectBox_Update(App_data$values)
+  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
 
   shiny::updateSelectInput(session, "valuevariableId",
                     label = "Choose Value Variable",
@@ -246,7 +246,7 @@ shiny::observeEvent(
     tryCatch(
 
       # Checks for error - if no error, this then performs the transformation
-      expr = {App_data$values <- temp_format|>
+      expr = {App_data$values <- temp_format |>
         tidyr::spread(input$keyvariableId,input$valuevariableId)
 
       shinyalert::shinyalert(title = "Long to wide transformation successful",
@@ -307,8 +307,8 @@ shiny::observeEvent(
     tryCatch(
 
       # Checks for error - if no error, this then performs the transformation
-      expr = {App_data$values <- temp_wide_format|>
-        tidyr::gather_(key_value_header$header,variable_value_header$header,key_value_options$data)|>
+      expr = {App_data$values <- temp_wide_format |>
+        tidyr::gather_(key_value_header$header,variable_value_header$header,key_value_options$data) |>
         dplyr::select(all_of(column_values$order))
 
       shinyalert::shinyalert(title = "Wide to long transform successful",
@@ -335,7 +335,7 @@ output$format_data <- DT::renderDataTable({
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
 
   # Data visualisation is achieved via a function inside a external script.
-  Format_Data <- Table_Render(App_data$values,cb)
+  Format_Data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
 })
 

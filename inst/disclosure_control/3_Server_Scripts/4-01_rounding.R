@@ -64,7 +64,7 @@ shiny::observeEvent(
       })
 
     # Round Data
-    App_data$values <- Stat_Round(temp_round, input$Disc_Variables_Round,input$Round_Cond)
+    App_data$values <- sdcshinyapp::Stat_Round(temp_round, input$Disc_Variables_Round,input$Round_Cond)
 
     # Clear Non-Rounded Data
     temp_round <- NULL
@@ -82,7 +82,7 @@ output$Rounded_data <- DT::renderDataTable({
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
 
   # Data visualisation is achieved via a function inside a external script.
-  Rounded_Data <- Table_Render(App_data$values,cb)
+  Rounded_Data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
   })
 

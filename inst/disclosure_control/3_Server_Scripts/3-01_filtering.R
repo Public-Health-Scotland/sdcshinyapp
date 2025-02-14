@@ -59,7 +59,7 @@ shiny::observeEvent(
 filter <- character(0)
 
 # Sets up filter
-makeReactiveBinding("aggregFilterObserver")
+shiny::makeReactiveBinding("aggregFilterObserver")
 aggregFilterObserver <- list() # Initial empty list for filtered variables
 
 # Allows a filter to be added to data due to button press
@@ -180,14 +180,14 @@ output$filtered_data <- DT::renderDataTable({
   # Filtering applied to App data
   invisible(lapply(aggregFilterObserver, function(filter){
 
-    dataSet <<- dataSet[which(!(dataSet[[filter$col]] %in% filter$rows)), ]
+    dataSet <- dataSet[which(!(dataSet[[filter$col]] %in% filter$rows)), ]
 
   }))
 
   App_data$values <- dataSet
 
   # Data visualisation is achieved via a function inside a external script.
-  Filter_Data <- Table_Render(App_data$values,cb)
+  Filter_Data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
   })
 
@@ -242,7 +242,7 @@ shiny::observeEvent(
         }
 
     # Stored data removed via filtering
-    removed_values$removed_data <- unprocessed$data|>
+    removed_values$removed_data <- unprocessed$data |>
       dplyr::anti_join(App_data$values, by = "Serial")
 
     # Clears data stored prior to filtering
