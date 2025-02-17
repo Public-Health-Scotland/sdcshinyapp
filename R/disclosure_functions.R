@@ -117,6 +117,18 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
 #' @examples inp_data
 #' @examples s_data
 Stat_Swap <- function(orig_data, var_choice, swap_cond) {
+
+  # Exit Function with input data if no input variables are provided
+  if (is.null(var_choice)) {
+
+    # Data to return
+    swapped_data <- orig_data
+
+    # Return unprocessed data
+    return(swapped_data)
+
+  }
+
   # Variables to be processed
   orig_var <- orig_data[, var_choice]
 
@@ -148,6 +160,21 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
   num_var_choice <- data.frame(num_var_choice) |>
     dplyr::filter(num_var_choice == TRUE) |>
     rownames(num_var_choice)
+
+  # Exit Function with input data if no numeric variables are provided
+  if (length(num_var_choice) == 0) {
+
+    # Data to return
+    swapped_data <- orig_data
+
+    # Transform NA value back to NA
+    swapped_data[, var_choice][swapped_data[, var_choice] == 999999999] <- NA
+    swapped_data[, var_choice][swapped_data[, var_choice] == "999999999"] <- NA
+
+    # Return unprocessed data
+    return(swapped_data)
+
+  }
 
   # Get number of columns containing whole numbers
   var_swap_len <- length(num_var_choice)
