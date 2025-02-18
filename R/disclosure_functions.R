@@ -31,6 +31,21 @@
 #' @examples inp_data
 #' @examples r_data
 Stat_Round <- function(orig_data, var_choice, round_cond) {
+
+  # Exit Function with input data if no input variables are provided
+  if (is.null(var_choice)) {
+
+    # Data to return
+    rounded_data <- orig_data
+
+    # Warning Message
+    print("No input variables have been selected. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(rounded_data)
+
+  }
+
   # Variables to be rounded
   orig_var <- orig_data[, var_choice]
 
@@ -62,6 +77,23 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
   num_var_choice <- data.frame(num_var_choice) |>
     dplyr::filter(num_var_choice == TRUE) |>
     rownames(num_var_choice)
+
+  # Exit Function with input data if no numeric variables are provided
+  if (length(num_var_choice) == 0) {
+
+    # Data to return
+    rounded_data <- orig_data
+
+    # Transform NA value back to NA
+    rounded_data[, var_choice][rounded_data[, var_choice] == rounding_NA_value] <- NA
+
+    # Warning Message
+    print("No numeric variables have been selected. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(rounded_data)
+
+  }
 
   # Store Variables chosen for rounding
   x <- orig_data[, num_var_choice]
@@ -124,6 +156,9 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
     # Data to return
     swapped_data <- orig_data
 
+    # Warning Message
+    print("No input variables have been selected. The original input data will be returned.")
+
     # Return unprocessed data
     return(swapped_data)
 
@@ -170,6 +205,9 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
     # Transform NA value back to NA
     swapped_data[, var_choice][swapped_data[, var_choice] == 999999999] <- NA
     swapped_data[, var_choice][swapped_data[, var_choice] == "999999999"] <- NA
+
+    # Warning Message
+    print("No numeric variables have been selected. The original input data will be returned.")
 
     # Return unprocessed data
     return(swapped_data)
@@ -241,6 +279,21 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 #' @examples inp_data
 #' @examples ps_data
 Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zero) {
+
+  # Exit Function with input data if no input variables are provided
+  if (is.null(var_choice)) {
+
+    # Data to return
+    primary_data <- orig_data
+
+    # Warning Message
+    print("No input variables have been selected. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(primary_data)
+
+  }
+
   # Variables to be processed
   orig_var <- orig_data[, var_choice]
 
@@ -269,6 +322,24 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zer
   num_var_choice <- data.frame(num_var_choice) |>
     dplyr::filter(num_var_choice == TRUE) |>
     rownames(num_var_choice)
+
+  # Exit Function with input data if no numeric variables are provided
+  if (length(num_var_choice) == 0) {
+
+    # Data to return
+    primary_data <- orig_data
+
+    # Transform NA value back to NA
+    primary_data[, var_choice][primary_data[, var_choice] == 999999999] <- NA
+    primary_data[, var_choice][primary_data[, var_choice] == "999999999"] <- NA
+
+    # Warning Message
+    print("No numeric variables have been selected. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(rounded_data)
+
+  }
 
   # Store Variables choosen for Primary Suppression
   x <- orig_data[, num_var_choice]
@@ -345,6 +416,35 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zer
 #' @examples inp_data
 #' @examples s_data
 Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, char_supp, sup_cond, zero) {
+
+    # Exit Function with input data if no input primary suppression variables are provided
+  if (is.null(pri_var_choice)) {
+
+    # Data to return
+    secondary_data <- orig_data
+
+    # Warning Message
+    print("No primary suppression input variables have been selected. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(secondary_data)
+
+  }
+
+  # Exit Function with input data if no input secondary suppression variables are provided
+  if (is.null(sec_var_choice)) {
+
+    # Data to return
+    secondary_data <- orig_data
+
+    # Warning Message
+    print("No secondary suppression input variables have been selected. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(secondary_data)
+
+  }
+
   # Disable warning messages caused by function - ensures that the function runs smoothly
   options(warn = -1)
 
@@ -398,6 +498,24 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
   pri_var_choice <- data.frame(pri_var_choice) |>
     dplyr::filter(pri_var_choice == TRUE) |>
     rownames(pri_var_choice)
+
+  # Exit Function with input data if no numeric variables are provided for primary suppression
+  if (length(pri_var_choice) == 0) {
+
+    # Data to return
+    primary_data <- orig_data
+
+    # Transform NA value back to NA
+    primary_data[, var_choice][primary_data[, var_choice] == 999999999] <- NA
+    primary_data[, var_choice][primary_data[, var_choice] == "999999999"] <- NA
+
+    # Warning Message
+    print("No numeric variables have been selected for primary suppression. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(primary_data)
+
+  }
 
   # Store Variables chosen for Primary Suppression
   x <- orig_data[, pri_var_choice]
@@ -464,6 +582,24 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
   sec_var_choice <- data.frame(sec_var_choice) |>
     dplyr::filter(sec_var_choice == TRUE) |>
     rownames(sec_var_choice)
+
+  # Exit Function with input data if no numeric variables are provided for primary suppression
+  if (length(sec_var_choice) == 0) {
+
+    # Data to return
+    secondary_data <- orig_data
+
+    # Transform NA value back to NA
+    secondary_data[, var_choice][secondary_data[, var_choice] == 999999999] <- NA
+    secondary_data[, var_choice][secondary_data[, var_choice] == "999999999"] <- NA
+
+    # Warning Message
+    print("No numeric variables have been selected for secondary suppression. The original input data will be returned.")
+
+    # Return unprocessed data
+    return(primary_data)
+
+  }
 
   # Store Variables choosen for Secondary Suppression
   x <- primary_data[, sec_var_choice]
