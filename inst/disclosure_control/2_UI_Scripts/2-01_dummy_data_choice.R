@@ -1,69 +1,40 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 #Run on Posit version: 4.1.2
-#Last updated: 01 Oct 2024
+#Last updated: 21 Feb 2025
 #By: Robert Mitchell
 #Script: 2-01_dummy_data_choice.R
-#Purpose: To set up UI for the Dummy Data Selection Sub Tab
+#Purpose: Set up UI for the Sub-Tab used for the selection of Dummy Data
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 1. Dummy Data Choice Page ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+# Create Training Data Sub Tab for 1. Input Data Main Tab
 shiny::tabPanel("Training Data",
 
-         ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-         ## 1. Input and output Definitions ----
-         ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+                # Input and Output Definitions
+                shiny::fluidRow(
 
-         shiny::fluidRow(
+                  # Input Definitions
+                  shiny::column(3,
+                                shiny::h4("Use Training Data"), # Header to indicate use training data
+                                shiny::actionButton("use_train", label = "Use Training Data"), # Button to select training data
+                                shiny::br(), # New Line
+                                shiny::selectInput("train_data_select", label = "Choose Dataset",
+                                                   choices = c("Wide Data","Long Data")) # Select Training Data
+                  ),
 
-           ### ### ### ### ### ### ### ###
-           ### 1. Sidebar panel for inputs ----
-           ### ### ### ### ### ### ### ###
-
-           shiny::column(3,
-
-                         shiny::h4("Use Training Data"),
-
-                         # Input - Disable Training Data Section
-                         shiny::actionButton("use_train", label = "Use Training Data"),
-
-                         shiny::br(),
-
-                         # Input: Select a file
-                         shiny::selectInput("train_data_select", label = "Choose Dataset", choices = c("Wide Data","Long Data"))
-
-                         ),
-
-           ### ### ### ### ### ### ### ###
-           ### 2. Output Display ----
-           ### ### ### ### ### ### ### ###
-
-           shiny::mainPanel(
-
-             # Section Title
-             shiny::h1(shiny::strong("Data Information")),
-
-             shiny::br(),
-
-             # Output: Summary of distribution for File Input
-             shiny::h2(shiny::strong("Data Summary")),
-             shiny::verbatimTextOutput("Train_summary_dist"),
-
-             shiny::br(),
-
-             # Output: Summary of Missing Values for File Input
-             shiny::h2(strong("Percentage of Missing Values for each Variable")),
-             shiny::verbatimTextOutput("Train_summary_missing") # Shows percentage of missing values by column
-
-             )
-
-           )
-
-         )
+                  # Output Definitions
+                  shiny::mainPanel(
+                    shiny::h1(shiny::strong("Data Information")), # Main Heading for Training Data Information
+                    shiny::br(), # New Line
+                    shiny::h2(shiny::strong("Data Summary")), # Sub Heading for Training Data Summary
+                    shiny::verbatimTextOutput("Train_summary_dist"), # Summary of Training Data
+                    shiny::br(), # New Line
+                    shiny::h2(strong("Percentage of Missing Values for each Variable")), # Sub Heading for Training Data Missingness
+                    shiny::verbatimTextOutput("Train_summary_missing") # Percentage of missing values by column
+                  )
+                )
+)
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
