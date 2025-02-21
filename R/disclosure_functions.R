@@ -31,10 +31,8 @@
 #' @examples inp_data
 #' @examples r_data
 Stat_Round <- function(orig_data, var_choice, round_cond) {
-
   # Exit Function with input data if no input variables are provided
   if (is.null(var_choice)) {
-
     # Data to return
     rounded_data <- orig_data
 
@@ -43,7 +41,6 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
 
     # Return unprocessed data
     return(rounded_data)
-
   }
 
   # Variables to be rounded
@@ -80,7 +77,6 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
 
   # Exit Function with input data if no numeric variables are provided
   if (length(num_var_choice) == 0) {
-
     # Data to return
     rounded_data <- orig_data
 
@@ -92,7 +88,6 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
 
     # Return unprocessed data
     return(rounded_data)
-
   }
 
   # Store Variables chosen for rounding
@@ -149,10 +144,8 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
 #' @examples inp_data
 #' @examples s_data
 Stat_Swap <- function(orig_data, var_choice, swap_cond) {
-
   # Exit Function with input data if no input variables are provided
   if (is.null(var_choice)) {
-
     # Data to return
     swapped_data <- orig_data
 
@@ -161,7 +154,6 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 
     # Return unprocessed data
     return(swapped_data)
-
   }
 
   # Variables to be processed
@@ -198,7 +190,6 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 
   # Exit Function with input data if no numeric variables are provided
   if (length(num_var_choice) == 0) {
-
     # Data to return
     swapped_data <- orig_data
 
@@ -211,7 +202,6 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 
     # Return unprocessed data
     return(swapped_data)
-
   }
 
   # Get number of columns containing whole numbers
@@ -279,10 +269,8 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 #' @examples inp_data
 #' @examples ps_data
 Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zero) {
-
   # Exit Function with input data if no input variables are provided
   if (is.null(var_choice)) {
-
     # Data to return
     primary_data <- orig_data
 
@@ -291,7 +279,6 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zer
 
     # Return unprocessed data
     return(primary_data)
-
   }
 
   # Variables to be processed
@@ -325,7 +312,6 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zer
 
   # Exit Function with input data if no numeric variables are provided
   if (length(num_var_choice) == 0) {
-
     # Data to return
     primary_data <- orig_data
 
@@ -338,7 +324,6 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zer
 
     # Return unprocessed data
     return(primary_data)
-
   }
 
   # Store Variables choosen for Primary Suppression
@@ -416,10 +401,8 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zer
 #' @examples inp_data
 #' @examples s_data
 Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, char_supp, sup_cond, zero) {
-
-    # Exit Function with input data if no input primary suppression variables are provided
+  # Exit Function with input data if no input primary suppression variables are provided
   if (is.null(pri_var_choice)) {
-
     # Data to return
     secondary_data <- orig_data
 
@@ -428,12 +411,10 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
     # Return unprocessed data
     return(secondary_data)
-
   }
 
   # Exit Function with input data if no input secondary suppression variables are provided
   if (is.null(sec_var_choice)) {
-
     # Data to return
     secondary_data <- orig_data
 
@@ -442,7 +423,6 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
     # Return unprocessed data
     return(secondary_data)
-
   }
 
   # Disable warning messages caused by function - ensures that the function runs smoothly
@@ -501,7 +481,6 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
   # Exit Function with input data if no numeric variables are provided for primary suppression
   if (length(pri_num_var_choice) == 0) {
-
     # Data to return
     primary_data <- orig_data
 
@@ -514,7 +493,6 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
     # Return unprocessed data
     return(primary_data)
-
   }
 
   # Store Variables chosen for Primary Suppression
@@ -585,7 +563,6 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
   # Exit Function with input data if no numeric variables are provided for primary suppression
   if (length(sec_num_var_choice) == 0) {
-
     # Data to return
     secondary_data <- orig_data
 
@@ -598,7 +575,6 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
     # Return unprocessed data
     return(secondary_data)
-
   }
 
   # Store Variables choosen for Secondary Suppression
