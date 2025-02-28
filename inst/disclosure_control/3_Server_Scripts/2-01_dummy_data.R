@@ -44,8 +44,8 @@ shiny::observeEvent(
   input$use_train, {
 
     App_data$values <- trainingdata() |>
-      dplyr::mutate(Serial = row_number()) |>
-      dplyr::select(Serial, everything())
+      dplyr::mutate(Serial = dplyr::row_number()) |>
+      dplyr::select(Serial, dplyr::everything())
 
   }
 
