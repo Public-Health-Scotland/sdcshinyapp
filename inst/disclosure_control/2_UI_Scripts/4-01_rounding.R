@@ -8,59 +8,31 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 1. Rounding ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+# Create Rounding Sub-Tab for 3. SDC Methods Tab
 shiny::tabPanel("Rounding",
 
-                ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-                ## 1. Input and output Definitions ----
-                ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+                #Input and output Definitions
                 shiny::fluidRow(
 
-                  ### ### ### ### ### ### ### ###
-                  ### 1. Sidebar panel for inputs ----
-                  ### ### ### ### ### ### ### ###
-
+                  # Input Definitions
                   shiny::sidebarPanel(
-
-                    # Choose Variables to Round
-                    shiny::selectInput("Disc_Variables_Round", label = "Choose Variables to Round:", choices = "", multiple = TRUE),
-
-                    # Sidebar Panel for Rounding Condition
-                    shiny::numericInput("Round_Cond","Condition for Rounding",value = 10, min = 1, max = 1000),
-
-                    shiny::br(),
-
-                    # Action Button to round data
-                    shiny::h5(shiny::strong("Rounding")),
-                    shiny::actionButton("rounding", "Round"),
-
-                    shiny::br(),
-                    shiny::br(),
-                    shiny::br(),
-
-                    # Help Text
-                    shiny::h4("Rounding Information"),
-                    shiny::p("For rounding, all selected variables are rounded to the base set in the Condition for Rounding box.")
-
+                    shiny::selectInput("Disc_Variables_Round", label = "Choose Variables to Round:", choices = "", multiple = TRUE), # Choose Variables to Round
+                    shiny::numericInput("Round_Cond","Condition for Rounding", value = 10, min = 1, max = 1000), # Select Rounding Condition
+                    shiny::br(), # New Line
+                    shiny::h5(shiny::strong("Rounding")), # Heading indicating Rounding Button
+                    shiny::actionButton("rounding", "Round"), # Button to round data
+                    shiny::br(), # New Line
+                    shiny::br(), # New Line
+                    shiny::br(), # New Line
+                    shiny::h4("Rounding Information"), # Help Text Heading
+                    shiny::p("For rounding, all selected variables are rounded to the base set in the Condition for Rounding box.") # Help Text
                     ),
 
-                  ### ### ### ### ### ### ### ###
-                  ### 2. Output Display ----
-                  ### ### ### ### ### ### ### ###
-
+                  # Output Definitions
                   shiny::mainPanel(
-
-                    # Data Output for processed or unprocessed data
-                    DT::dataTableOutput("Rounded_data")
-
+                    DT::dataTableOutput("Rounded_data") # Visualisation of Rounded Data in App
                     )
-
                   )
-
                 )
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###

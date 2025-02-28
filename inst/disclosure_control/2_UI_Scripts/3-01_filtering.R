@@ -8,60 +8,32 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 1. Filtering Section ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+# Create Filtering Sub-Tab for 2. Input Data Filtering/Formatting Tab
 shiny::tabPanel("Filtering",
 
-         ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-         ## 1. Input and output Definitions ----
-         ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+         #Input and output Definitions
          shiny::fluidRow(
 
-           ### ### ### ### ### ### ### ###
-           ### 1. Sidebar panel for inputs ----
-           ### ### ### ### ### ### ### ###
+           # Input Definitions
            shiny::sidebarPanel(
-
-             # Button to store data prior to filtering
-             shiny::h5(shiny::strong("Store Unprocessed Data")),
-             shiny::actionButton('Unprocess_Store', 'Store'),
-
-             shiny::br(),
-
-
-             # Button to filter Data
-             shiny::h5(shiny::strong("Filter Data")),
-             shiny::actionButton('addFilter', 'Add filter'),
-
+             shiny::h5(shiny::strong("Store Unprocessed Data")), # Header to indicate Button for data storage
+             shiny::actionButton('Unprocess_Store', 'Store'), # Button to store data prior to filtering
+             shiny::br(), # New Line
+             shiny::h5(shiny::strong("Filter Data")), # Header to indicate Filter Button
+             shiny::actionButton('addFilter', 'Add filter'), # Button to filter Data
              shiny::div(id = 'placeholderAddRemFilt'),
-
-             shiny::div(id = 'placeholderFilter'),
-
-             shiny::br(),
-
-             #Button to store filtered data
+             shiny::div(id = 'placeholderFilter'), # Used to insert UI for Add Filter options
+             shiny::br(), # New Line
              shiny::h5(shiny::strong("Store Filtered Data")),
-             shiny::actionButton('store_data', 'Store'),
-
-             shiny::br(),
-
-
-             #Button to re-add filtered data back into data frame
+             shiny::actionButton('store_data', 'Store'), #Button to store filtered data
+             shiny::br(), # New Line
              shiny::h5(strong("Re-add Filtered Data Back In")),
-             shiny::actionButton('re_add_data', 'Re-add')
+             shiny::actionButton('re_add_data', 'Re-add') #Button to re-add filtered data back into data frame
+             ),
 
-           ),
-
-           ### ### ### ### ### ### ### ###
-           ### 2. Output Display ----
-           ### ### ### ### ### ### ### ###
-
-           shiny::mainPanel(DT::dataTableOutput("filtered_data"))
-
+           # Output Definitions
+           shiny::mainPanel(DT::dataTableOutput("filtered_data")) # Visualisation of Filtered Data in App
            )
-
          )
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
