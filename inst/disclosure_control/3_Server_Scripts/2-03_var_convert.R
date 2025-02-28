@@ -41,12 +41,6 @@ shiny::observeEvent(input$char_to_num, {
 
   } else {
 
-    # Notification success
-    shinyalert::shinyalert(
-      title = "Variable converted to a numeric format",
-      type = "success"
-    )
-
     # Temp Storage of Unprocessed data
     isolate({temp_char <- App_data$values})
 
@@ -68,6 +62,13 @@ shiny::observeEvent(input$char_to_num, {
       # Update the value in App_data
       App_data$values[[input$Variable_Convert]] <- converted_value
       temp_char <- NULL
+
+      # Notification success
+      shinyalert::shinyalert(
+        title = "Variable converted to a numeric format",
+        type = "success"
+      )
+
     }
   }
 })
