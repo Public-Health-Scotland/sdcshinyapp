@@ -8,58 +8,29 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 1. Data Download ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+# Create 4. Download Data Tab
 shiny::tabPanel("4. Download Data", fluid = TRUE,
 
-                ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-                ## 1. Input and output Definitions ----
-                ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+                #Input and output Definitions
                 shiny::fluidRow(
 
-                  ### ### ### ### ### ### ### ###
-                  ### 1. Sidebar panel for inputs ----
-                  ### ### ### ### ### ### ### ###
-
+                  # Input Definitions
                   shiny::sidebarPanel(
-
-                    shiny::h4(shiny::strong("File Download/Data Reset")),
-
-                    #Action Button to ensure that data can be transferred back to it's original state
-                    shiny::h5(shiny::strong("Reset Uploaded Data")),
-                    shiny::actionButton("upload_dat_reset", "Reset"),
-
-                    shiny::br(),
-
-                    #Action Button to ensure that data can be transferred back to it's original state
-                    shiny::h5(shiny::strong("Reset Training Data")),
-                    shiny::actionButton("training_dat_reset", "Reset"),
-
-                    shiny::br(),
-
-                    # Download button to download processed data
-                    shiny::h5(shiny::strong("Download Data")),
-                    shiny::downloadButton("downloadData", label = "Download")
-
+                    shiny::h4(shiny::strong("File Download/Data Reset")),shiny::h5(shiny::strong("Reset Uploaded Data")), # Heading indicating data reset button
+                    shiny::actionButton("upload_dat_reset", "Reset"), # Button to reset Uploaded data back to original state
+                    shiny::br(), # New Line
+                    shiny::h5(shiny::strong("Reset Training Data")), # Heading indicating data reset button
+                    shiny::actionButton("training_dat_reset", "Reset"), # Button to reset Training data back to original state
+                    shiny::br(), # New Line
+                    shiny::h5(shiny::strong("Download Data")), # Download Button Heading
+                    shiny::downloadButton("downloadData", label = "Download") # Download Processed Data
                     ),
 
-                  ### ### ### ### ### ### ### ###
-                  ### 2. Output Display ----
-                  ### ### ### ### ### ### ### ###
-
+                  # Output Definitions
                   shiny::mainPanel(
-
-                    # Data Output for processed or unprocessed data
-
-                    DT::dataTableOutput("Final_data")
-
+                    DT::dataTableOutput("Final_data") # Visualisation of Final Data in App
                     )
-
                   )
-
                 )
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
