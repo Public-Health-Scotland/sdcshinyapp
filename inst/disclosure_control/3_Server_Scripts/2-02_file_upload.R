@@ -52,14 +52,6 @@ output$upload_summary_dist <- shiny::renderPrint({
 
 })
 
-# Dataset Missingness Summary
-output$upload_summary_missing <- shiny::renderPrint({
-
-  # Calculates Percentage of data missing in each variable
-  (colSums(is.na(data())) / nrow(data()))*100
-
-})
-
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # End ----
