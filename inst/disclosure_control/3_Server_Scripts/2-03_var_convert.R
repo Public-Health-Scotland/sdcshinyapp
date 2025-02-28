@@ -30,19 +30,17 @@ shiny::observeEvent(input$char_to_num, {
   if (input$Variable_Convert == "") {
 
     # Notification error
-    shinyalert::shinyalert(
-      title = "There is no input variable selected",
-      text = "Please select input variable.",
-      type = "error"
-    )
+    shinyalert::shinyalert(title = "There is no input variable selected",
+                           text = "Please select input variable.",
+                           type = "error")
 
     # Variable Validation
     shiny::validate(shiny::need(input$Variable_Convert, "No Variables are selected"))
 
-  } else {
+    }
 
     # Temp Storage of Unprocessed data
-    isolate({temp_char <- App_data$values})
+    shiny::isolate({temp_char <- App_data$values})
 
     # Attempt to convert variable to numeric
     converted_value <- suppressWarnings(as.numeric(temp_char[[input$Variable_Convert]]))
@@ -50,68 +48,90 @@ shiny::observeEvent(input$char_to_num, {
     # Check if conversion was successful
     if (is.na(converted_value)) {
 
+      # Clear Temp Values
+      temp_char <- NULL
+      converted_value <- NULL
+
       # Notification error
-      shinyalert::shinyalert(
-        title = "Conversion Error",
-        text = "The selected variable could not be converted to numeric.",
-        type = "error"
-      )
+      shinyalert::shinyalert(title = "Conversion Error",
+                             text = "The selected variable could not be converted to numeric.",
+                             type = "error")
 
-    } else {
+      # Variable Validation
+      shiny::validate(shiny::need(converted_value, "No Variables converted"))
 
-      # Update the value in App_data
+      } else {
+
+      # Update the value in App_data and clear temp values
       App_data$values[[input$Variable_Convert]] <- converted_value
       temp_char <- NULL
+      converted_value <- NULL
 
       # Notification success
-      shinyalert::shinyalert(
-        title = "Variable converted to a numeric format",
-        type = "success"
-      )
+      shinyalert::shinyalert(title = "Variable converted to a numeric format", type = "success")
 
-    }
-  }
-})
+      }
+    })
 
 # 3. Numeric to Character Variable Conversion ----
 
 # Convert with button press
-observeEvent(
+shiny::observeEvent(
 
   input$num_to_char, {
 
-    # Ensures input data is available
-    shiny::validate(
-      shiny::need(App_data$values, "There is no Input Data")
-    )
+    # Ensure input data is available
+    shiny::validate(shiny::need(App_data$values, "There is no Input Data"))
 
     # Ensures input variable is selected
     if (input$Variable_Convert == ""){
 
       # Notification error
-      shinyalert::shinyalert(title = "There is no input variable selected", text = "Please select input variable.", type = "error")
+      shinyalert::shinyalert(title = "There is no input variable selected",
+                             text = "Please select input variable.",
+                             type = "error")
 
       # Variable Validation
-      shiny::validate(
-        shiny::need(input$Variable_Convert, "No Variables are selected")
-        )
+      shiny::validate(shiny::need(input$Variable_Convert, "No Variables are selected"))
 
-      } else {
+      }
 
-        # Notification success
-        shinyalert::shinyalert("Variable converted to a character format", type = "success")
+      # Temp Storage of Unprocessed data
+      shiny::isolate({temp_num <- App_data$values})
+
+      # Attempt to convert variable to numeric
+      converted_value <- suppressWarnings(as.character(temp_num[[input$Variable_Convert]]))
+
+      # Check if conversion was successful
+      if (is.na(converted_value)) {
+
+        # Clear Temp Values
+        temp_num <- NULL
+        converted_value <- NULL
+
+        # Notification error
+        shinyalert::shinyalert(title = "Conversion Error",
+                               text = "The selected variable could not be converted to character.",
+                               type = "error")
+
+        # Variable Validation
+        shiny::validate(shiny::need(converted_value, "No Variables converted"))
+
+        } else {
+
+          # Update the value in App_data
+          App_data$values[[input$Variable_Convert]] <- converted_value
+          temp_num <- NULL
+          converted_value <- NULL
+
+          # Notification success
+          shinyalert::shinyalert(
+            title = "Variable converted to a numeric format",
+            type = "success"
+          )
 
         }
-
-    # Temp Storage of Unprocessed data
-    shiny::isolate({temp_num <- App_data$values})
-
-    # Convert variable and clear temp data
-    App_data$values[[input$Variable_Convert]] <- as.character(temp_num[[input$Variable_Convert]])
-    temp_num <- NULL
-
-    }
-  )
+      })
 
 
 # 4. Data Visualisation ----
