@@ -27,7 +27,7 @@ shiny::observe({
 # Secondary Suppression Checkbox Update
 shiny::observe({
 
-  cb_options <- SelectBox_Update(App_data$values)
+  cb_options <- shiny::SelectBox_Update(App_data$values)
 
   # Update Selectbox
   shiny::updateSelectInput(session, "Disc_Variables_Secondary_Supp",
