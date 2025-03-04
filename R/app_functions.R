@@ -1,16 +1,15 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # Run on Posit version: 4.1.2
-# Last updated: 02 Oct 2024
+# Last updated: 04 Mar 2025
 # By: Robert Mitchell
 # Script: app_functions.R
 # Purpose: Contains all functions created specifically for a Shiny App
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
 # 1. Table Rendering ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 #' Table_Render
 #' @description Used for rendering tables within the SDC App. Can only be used inside Shiny App
@@ -18,9 +17,6 @@
 #' @param cb Allows for interactive visualisation from Table
 #'
 #' @return output_data Visualised Table
-#' @export
-#'
-#' @examples
 Table_Render <- function(dataset, cb) {
   output_data <- DT::datatable(
     data = dataset,
@@ -43,19 +39,14 @@ Table_Render <- function(dataset, cb) {
   return(output_data)
 }
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 2. SelectBox Update ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
+# 2. SelectBox Update ----
 
 #' SelectBox_Update
 #' @description Used for generate variable names in selectboxes. Can only be used inside Shiny App
 #' @param SDC_data input data containing variable names
 #'
 #' @return cb_options Variables names given in select box
-#' @export
-#'
-#' @examples
 SelectBox_Update <- function(SDC_data) {
   # Check if data is given
   shiny::req(SDC_data)
