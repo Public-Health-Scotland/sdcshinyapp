@@ -42,6 +42,10 @@ Stat_Round <- function(orig_data, var_choice, round_cond) {
     stop("Error: 'var_choice' must be a non-empty character vector.")
   }
 
+  if (!all(var_choice %in% colnames(orig_data))) {
+    stop("Error: One or more columns specified in 'var_choice' do not exist in 'orig_data'.")
+  }
+
   if (!is.numeric(round_cond) || length(round_cond) != 1 || round_cond <= 0 || round_cond %% 1 != 0) {
     stop("Error: 'round_cond' must be a single positive whole integer.")
   }
