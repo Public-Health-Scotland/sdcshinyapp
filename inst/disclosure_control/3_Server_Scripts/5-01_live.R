@@ -8,102 +8,80 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # 1. Data Reset ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-# Reset with button press
-shiny::observeEvent(
+# Data Reset
+shiny::observeEvent(input$upload_dat_reset, {
 
-  input$upload_dat_reset, {
+  # Validation - Data must be provided
+  shiny::validate(shiny::need(data(), "There is no input data"))
 
-    # Ensures that this only works when data is provided
-    shiny::validate(
-      shiny::need(data(), "There is no input data")
-      )
+  # Success Notification
+  shinyalert::shinyalert(title = "Input data reset to initial state.", type = "success")
 
-    shinyalert::shinyalert(title = "Input data reset to initial state.",
-                           type = "success")
+  # Data Reset
+  shiny::isolate({
+    App_data$values <- data() |>
+      dplyr::mutate(Serial = row_number()) |>
+      dplyr::select(Serial, dplyr::everything())
+    })
 
+  # Clear Prior Settings
+  unprocessed$data <- NULL
+  removed_values$removed_data <- NULL
+  Serial_Removed$data <- NULL
+  key_value_header$header <- NULL
+  variable_value_header$header <- NULL
+  key_value_options$data <- NULL
 
-    #Data Reset
-    shiny::isolate({
+  })
 
-      App_data$values <- data() |>
-        dplyr::mutate(Serial = row_number()) |>
-        dplyr::select(Serial, dplyr::everything())
-
-      })
-
-    # Clear Prior Settings
-    unprocessed$data <- NULL
-    removed_values$removed_data <- NULL
-    Serial_Removed$data <- NULL
-    key_value_header$header <- NULL
-    variable_value_header$header <- NULL
-    key_value_options$data <- NULL
-
-    }
-
-  )
-
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # 2. Data Download ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
 output$downloadData <- shiny::downloadHandler(
 
-  # Store Filename
+  ## 1. Store Filename ----
   filename = function(){
 
-    # Ensures that this only works when data is provided
-    shiny::validate(
-      shiny::need(App_data$values, "There is no input data")
-      )
+    # Validation - Data must be provided
+    shiny::validate(shiny::need(App_data$values, "There is no input data"))
 
+    # File Name
     paste0("SDC_", input$upload$name)
 
     },
 
-  # Download of different file type
+  ## 2. Allow Download of different file types ----
   content = function(fname){
 
-    # Ensures that this only works when data is provided
-    shiny::validate(
-      shiny::need(App_data$values, "There is no input data")
-      )
+    # Validation - Data must be provided
+    shiny::validate(shiny::need(App_data$values, "There is no input data"))
 
     # Final Data
     Final <- App_data$values
 
+    ### 1. .csv files ----
     if (input$upload$type == "text/csv") {
 
       utils::write.csv(Final, fname, row.names = FALSE)
 
+      ### 2. .xlsx files ----
       } else if (input$upload$type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
 
-        # For writing xlsx, data must be stored in dataframe
-        Final <- as.data.frame(Final)
-
+        Final <- as.data.frame(Final) # For this file type, data must be stored in dataframe
         openxlsx::write.xlsx(Final, fname, row.names = FALSE)
 
+        ### 3. .xls files ----
         } else if (input$upload$type == "application/vnd.ms-excel") {
 
-          # For writeing xls, data must be stored in dataframe
-          Final <- as.data.frame(Final)
-
+          Final <- as.data.frame(Final) # For this file type, data must be stored in dataframe
           openxlsx::write.xlsx(Final, fname, row.names = FALSE)
 
+          ### 4. All other files (write as .csv) ----
           } else {
 
             utils::write.csv(Final, fname, row.names = FALSE)
 
-          }
-
-    }
-
-  )
+            }})
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
