@@ -27,7 +27,7 @@ shiny::observe({
 shiny::observe({
 
   # Variable Options
-  cb_options <- SelectBox_Update(App_data$values)
+  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
 
   # Update Selectbox
   shiny::updateSelectInput(session, "Disc_Variables_Secondary_Supp",
