@@ -8,14 +8,12 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 1. Updates variable select option ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+# 1. Update variable select option ----
 
-# Updates variable options for swapping
+## 1. Variable updates of select input box ----
 shiny::observe({
 
-  # Stores all variable names in App data apart from Serial - this function is in a external script
+  # Variable Options
   cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
 
   # Update Selectbox
@@ -26,66 +24,50 @@ shiny::observe({
 
   })
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
 # 2. Swap Variables ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-# Swap Selected Variables with button press
-shiny::observeEvent(
 
-  input$swapping, {
+## 1. Swap Selected Variables ----
+shiny::observeEvent(input$swapping, {
 
-    # Ensure that variables are selected for swapping
-    if (is.null(input$Disc_Variables_Swap)){
+  # Stop if variables not selected
+  if (is.null(input$Disc_Variables_Swap)){
 
-      # Error Notification indicating that variables should be selected
-      shinyalert::shinyalert(title = "There is no input variables selected",
-                             text = "Please select input variables.",
-                             type = "error")
+    # Error Notification
+    shinyalert::shinyalert(title = "There is no input variables selected",
+                           text = "Please select input variables.",
+                           type = "error")
 
-      # Ensures that values are selected for swapping
-      shiny::validate(
-        shiny::need(!is.null(input$Disc_Variables_Swap), "There is no variables selected for record swapping")
-
-        )
-
-      } else {
-
-      # Notification indicating successful swapping
-        shinyalert::shinyalert(title = "Record Swapping successful.",
-                               type = "success")
-
-        }
-
-    # Store Non-Swapped Data
-    shiny::isolate({
-
-      temp_swap <- App_data$values
-
-      })
-
-    #Swap Data
-    App_data$values <- sdcshinyapp::Stat_Swap(temp_swap, input$Disc_Variables_Swap, input$Swap_Cond)
-
-    # Clear Non-Swapped Data
-    temp_swap <- NULL
+    # Validation
+    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Swap), "There is no variables selected for record swapping"))
 
     }
 
-  )
+  # Success Notification
+  shinyalert::shinyalert(title = "Record Swapping successful.",
+                         type = "success")
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # Store Non-Swapped Data
+  shiny::isolate({temp_swap <- App_data$values})
+
+  # Swap Data
+  App_data$values <- sdcshinyapp::Stat_Swap(temp_swap, input$Disc_Variables_Swap, input$Swap_Cond)
+
+  # Clear Non-Swapped Data
+  temp_swap <- NULL
+
+  })
+
+
 # 3. Data Visualisation ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 output$Swapped_data <- DT::renderDataTable({
 
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
-
-  # Data visualisation is achieved via a function inside a external script.
   Swapped_Data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
-})
+  })
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###

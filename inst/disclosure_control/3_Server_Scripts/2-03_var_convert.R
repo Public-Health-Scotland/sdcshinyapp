@@ -8,127 +8,134 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-## 1. Updates Check Boxes with variable names ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-
+# 1. Updates Check Boxes with variable names ----
 shiny::observe({
 
-  # Stores all variable names in App data apart from Serial - this function is in a external script
-  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values)
+  cb_options <- sdcshinyapp::SelectBox_Update(App_data$values) # Stores all variable names from App data apart from Serial
 
-  # Update Selectbox
-  shiny::updateSelectInput(session, "Variable_Convert",
-                          label = "Choose Variables to Convert:",
-                          choices = cb_options,
-                          selected = "")
+  # Update Selectbox input with variable names
+  shiny::updateSelectInput(session, inputId = "Variable_Convert", label = "Choose Variables to Convert:", choices = cb_options, selected = "")
+
   })
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-## 2. Character to Numeric Variable Conversion ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+# 2. Character to Numeric Variable Conversion ----
 
 # Convert with button press
-shiny::observeEvent(
+shiny::observeEvent(input$char_to_num, {
 
-  input$char_to_num, {
+  # Ensure input data is available
+  shiny::validate(shiny::need(App_data$values, "There is no Input Data"))
 
-    # Ensures that the input data is available
-    shiny::validate(
-      need(App_data$values, "There is no Input Data")
-    )
+  # Ensure input variable is selected
+  if (input$Variable_Convert == "") {
 
-    # Ensures that input variable is selected
-    if (input$Variable_Convert == ""){
+    # Notification error
+    shinyalert::shinyalert(title = "There is no input variable selected",
+                           text = "Please select input variable.",
+                           type = "error")
 
-      # Variable Selection Notification error
-      shinyalert::shinyalert(title = "There is no input variable selected", text = "Please select input variable.", type = "error")
-
-      # Variable Validation
-      shiny::validate(
-        shiny::need(input$Variable_Convert, "No Variables are selected")
-        )
-
-      } else {
-
-        # Variable Convertion Notification success
-        shinyalert::shinyalert(title = "Variable converted to a numeric format", type = "success")
-
-        }
-
-    # Temp Storage of Unprocessed data
-    isolate({
-
-      temp_char <- App_data$values
-
-      })
-
-    # Convert variable and clear Unprocessed Data
-    App_data$values[[input$Variable_Convert]] <- as.numeric(temp_char[[input$Variable_Convert]])
-    temp_char <- NULL
+    # Variable Validation
+    shiny::validate(shiny::need(input$Variable_Convert, "No Variables are selected"))
 
     }
 
-  )
+    # Temp Storage of Unprocessed data
+    shiny::isolate({temp_char <- App_data$values})
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-## 3. Numeric to Character Variable Conversion ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+    # Attempt to convert variable to numeric
+    converted_value <- suppressWarnings(as.numeric(temp_char[[input$Variable_Convert]]))
 
-# Convert with button press
-observeEvent(
+    # Check if conversion was successful
+    if (is.na(converted_value)) {
 
-  input$num_to_char, {
+      # Clear Temp Values
+      temp_char <- NULL
+      converted_value <- NULL
 
-    # Ensure that the input data is available
-    shiny::validate(
-      shiny::need(App_data$values, "There is no Input Data")
-    )
-
-    # Ensure that input variable is selected
-    if (input$Variable_Convert == ""){
-
-      # Variable Selection Notification error
-      shinyalert::shinyalert(title = "There is no input variable selected", text = "Please select input variable.", type = "error")
+      # Notification error
+      shinyalert::shinyalert(title = "Conversion Error",
+                             text = "The selected variable could not be converted to numeric.",
+                             type = "error")
 
       # Variable Validation
-      shiny::validate(
-        shiny::need(input$Variable_Convert, "No Variables are selected")
-        )
+      shiny::validate(shiny::need(converted_value, "No Variables converted"))
 
-      } else {
+      }
 
-        # Variable Convertion Notification success
-        shinyalert::shinyalert("Variable converted to a character format", type = "success")
+      # Update the value in App_data and clear temp values
+      App_data$values[[input$Variable_Convert]] <- converted_value
+      temp_char <- NULL
+      converted_value <- NULL
 
-        }
-
-    # Temp Storage of Unprocessed data
-    shiny::isolate({
-
-      temp_num <- App_data$values
+      # Notification success
+      shinyalert::shinyalert(title = "Variable converted to a numeric format", type = "success")
 
       })
 
-    # Convert variable and clear temp data
-    App_data$values[[input$Variable_Convert]] <- as.character(temp_num[[input$Variable_Convert]])
-    temp_num <- NULL
+# 3. Numeric to Character Variable Conversion ----
 
-    }
+# Convert with button press
+shiny::observeEvent(input$num_to_char, {
 
-  )
+    # Ensure input data is available
+    shiny::validate(shiny::need(App_data$values, "There is no Input Data"))
+
+    # Ensures input variable is selected
+    if (input$Variable_Convert == ""){
+
+      # Notification error
+      shinyalert::shinyalert(title = "There is no input variable selected",
+                             text = "Please select input variable.",
+                             type = "error")
+
+      # Variable Validation
+      shiny::validate(shiny::need(input$Variable_Convert, "No Variables are selected"))
+
+      }
+
+      # Temp Storage of Unprocessed data
+      shiny::isolate({temp_num <- App_data$values})
+
+      # Attempt to convert variable to numeric
+      converted_value <- suppressWarnings(as.character(temp_num[[input$Variable_Convert]]))
+
+      # Check if conversion was successful
+      if (is.na(converted_value)) {
+
+        # Clear Temp Values
+        temp_num <- NULL
+        converted_value <- NULL
+
+        # Notification error
+        shinyalert::shinyalert(title = "Conversion Error",
+                               text = "The selected variable could not be converted to character.",
+                               type = "error")
+
+        # Variable Validation
+        shiny::validate(shiny::need(converted_value, "No Variables converted"))
+
+        }
+
+        # Update the value in App_data
+        App_data$values[[input$Variable_Convert]] <- converted_value
+        temp_num <- NULL
+        converted_value <- NULL
+
+        # Notification success
+        shinyalert::shinyalert(title = "Variable converted to a numeric format",
+                               type = "success")
+
+        })
 
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-## 4. Data Visualisation ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+# 4. Data Visualisation ----
 
 output$convert_data <- DT::renderDataTable({
 
+  # Trigger debugger and render static widgets
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
 
-  # Data visualisation is achieved via a function inside a external script.
+  # Visualise Data
   convert_data <- sdcshinyapp::Table_Render(App_data$values,cb)
 
 })

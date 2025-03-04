@@ -8,26 +8,21 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # 1. Data Visualisation ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 output$Final_data <- DT::renderDataTable({
 
   cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
-
   final <- sdcshinyapp::Table_Render(App_data$values,cb)
 
   })
 
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-# 2. Data Reset amd Download ----
-### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+# 2. Data Reset and Download ----
 
-# Download and reset of uploaded data
+## 1. Download and reset of uploaded data ----
 source("3_Server_Scripts/5-01_live.R",  local = TRUE)$value
 
-# Download and reset of training data
+## 2. Download and reset of training data ----
 source("3_Server_Scripts/5-02_train.R",  local = TRUE)$value
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###

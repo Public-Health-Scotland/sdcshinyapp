@@ -10,14 +10,10 @@
 
 server <- function(input, output, session) {
 
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-  ## 1. Home ----
-  ## There is no scripts required as the home Section has no active functions
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # 1. Home ----
+  # There is no scripts required as the home Section has no active functions
 
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-  ## 2. File Upload/Data Input ----
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # 2. File Upload/Data Input ----
 
   # Training Data Input Side Panel Script
   source("3_Server_Scripts/2-01_dummy_data.R",  local = TRUE)$value
@@ -31,9 +27,7 @@ server <- function(input, output, session) {
   # Data Summary after processing Side Panel script
   source("3_Server_Scripts/2-04_post_proc_summary.R",  local = TRUE)$value
 
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-  ## 3. Filtering/Formatting ----
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # 3. Filtering/Formatting ----
 
   # Filtering Side Panel Script
   source("3_Server_Scripts/3-01_filtering.R",  local = TRUE)$value
@@ -41,9 +35,7 @@ server <- function(input, output, session) {
   # Formatting Side Panel Script
   source("3_Server_Scripts/3-02_formatting.R",  local = TRUE)$value
 
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-  ## 4. SDC Methods ----
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # 4. SDC Methods ----
 
   # Rounding Side Panel Script
   source("3_Server_Scripts/4-01_rounding.R",  local = TRUE)$value
@@ -54,17 +46,13 @@ server <- function(input, output, session) {
   # Suppression Side Panel Script
   source("3_Server_Scripts/4-03_suppression.R",  local = TRUE)$value
 
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-  ## 5. Download ----
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # 5. Download ----
 
   # Download Script
   source("3_Server_Scripts/5_download.R",  local = TRUE)$value
 
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-  ## 6. Shut App ----
-  ## When Browser is closed
-  ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+  # 6. Shut App ----
+  # When Browser is closed
 
   session$onSessionEnded(stopApp)
 
