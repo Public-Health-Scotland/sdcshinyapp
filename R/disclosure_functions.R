@@ -15,13 +15,14 @@
 # 1. Rounding ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-#' Stat_Round Function
-#' @description Performs rounding on selected variables within a dataset to a chosen base
-#' @param orig_data Input Data to be disclosed
-#' @param var_choice Choice of variables to be rounded
-#' @param round_cond Rounding Base
+#' Round Selected Variables in a Dataset
 #'
-#' @return rounded_data Disclosed Data with Rounding Applied
+#' This function rounds specified variables within a dataset to a chosen base. It handles missing values by temporarily replacing them with a high value, which is reverted back to `NA` after rounding.
+#' @param orig_data A data frame containing the input data to be rounded.
+#' @param var_choice A character vector specifying the names of the variables to be rounded.
+#' @param round_cond A single positive whole integer indicating the rounding base.
+#'
+#' @return A data frame with the selected variables rounded to the specified base.
 #' @export
 #'
 #' @examples inp_data <- dummy_wide
@@ -31,97 +32,53 @@
 #' @examples inp_data
 #' @examples r_data
 Stat_Round <- function(orig_data, var_choice, round_cond) {
-  # Exit Function with input data if no input variables are provided
-  if (is.null(var_choice)) {
-    # Data to return
-    rounded_data <- orig_data
 
-    # Warning Message
-    print("No input variables have been selected. The original input data will be returned.")
-
-    # Return unprocessed data
-    return(rounded_data)
+  # Error handling for all input arguments
+  if (missing(orig_data) || is.null(orig_data)) {
+    stop("Error: 'orig_data' must be provided and cannot be NULL.")
   }
 
-  # Variables to be rounded
-  orig_var <- orig_data[, var_choice]
-
-  # Check if variable is given as vector (use for one pri var)
-  vec_check <- is.vector(orig_var)
-
-  # Transform vector into data frame (Used for when one pri var given)
-  if (vec_check == TRUE) {
-    orig_var <- data.frame(orig_var)
-
-    names(orig_var)[names(orig_var) == "orig_var"] <- var_choice
-  } else {
-
+  if (!is.character(var_choice) || length(var_choice) == 0) {
+    stop("Error: 'var_choice' must be a non-empty character vector.")
   }
+
+  if (!is.numeric(round_cond) || length(round_cond) != 1 || round_cond <= 0 || round_cond %% 1 != 0) {
+    stop("Error: 'round_cond' must be a single positive whole integer.")
+  }
+
+  # Assign data to processed version of data
+  r_data <- orig_data
 
   # Replace any NAs with a high value
-  orig_var[is.na(orig_var)] <- 999999999
+  r_data[, var_choice][is.na(r_data[, var_choice])] <- 999999999
 
-  # Ensures that replacement of NAs occurs
-  orig_data[, var_choice] <- orig_var
-
-  # NA value after rounding has occured - this is changed back to NA for the disclosed data
+  # NA value after rounding has occurred - this is changed back to NA for the disclosed data
   rounding_NA_value <- plyr::round_any(999999999, round_cond, round)
 
   # Check if column headers are all whole numbers
-  num_var_choice <- unlist(lapply(orig_data[var_choice], DistributionUtils::is.wholenumber))
+  num_var_choice <- sapply(r_data[, var_choice, drop = FALSE], DistributionUtils::is.wholenumber)
 
   # Only select variables with whole numbers
-  num_var_choice <- data.frame(num_var_choice) |>
-    dplyr::filter(num_var_choice == TRUE) |>
-    rownames(num_var_choice)
+  num_var_choice <- names(num_var_choice)[num_var_choice]
 
   # Exit Function with input data if no numeric variables are provided
   if (length(num_var_choice) == 0) {
-    # Data to return
-    rounded_data <- orig_data
-
-    # Transform NA value back to NA
-    rounded_data[, var_choice][rounded_data[, var_choice] == rounding_NA_value] <- NA
-
     # Warning Message
     print("No numeric variables have been selected. The original input data will be returned.")
-
     # Return unprocessed data
-    return(rounded_data)
+    return(orig_data)
   }
-
-  # Store Variables chosen for rounding
-  x <- orig_data[, num_var_choice]
-
-  # Transform vector into data frame (Used for when one pri var given)
-  if (vec_check == TRUE) {
-    x <- data.frame(x)
-
-    names(x)[names(x) == "x"] <- num_var_choice
-  } else {
-
-  }
-
-  # Copy of original data
-  rounded_data <- orig_data
 
   # Rounds chosen variables if provided variables are whole numbers
-  rounded_data[, num_var_choice] <- lapply(
-    x,
-    function(x) {
-      if (DistributionUtils::is.wholenumber(x)) {
-        plyr::round_any(x, round_cond, round)
-      } else {
-        x
-      }
-    }
-  )
+  r_data[, num_var_choice] <- lapply(r_data[, num_var_choice, drop = FALSE], function(x) {
+    plyr::round_any(x, round_cond, round)
+  })
 
   # Add NAs back to data
-  rounded_data[, var_choice][rounded_data[, var_choice] == rounding_NA_value] <- NA
+  r_data[, var_choice][r_data[, var_choice] == rounding_NA_value] <- NA
 
   # Rounded Data
-  return(rounded_data)
+  return(r_data)
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
