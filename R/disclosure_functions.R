@@ -211,130 +211,79 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 # 3. Primary Suppression ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-#' Stat_Primary_Supress Function
-#' @description Performs Primary Suppression on selected variables within a Dataset
-#' @param orig_data Input Data to be disclosed
-#' @param var_choice Choice of variables to be suppressed
-#' @param char_supp Character used to indicate suppression
-#' @param sup_cond Values equal to or below this value will be suppressed
-#' @param zero Indicates if 0 should be suppressed
+#' Perform Primary Suppression on Selected Variables
 #'
-#' @return Disclosed Data with Primary Suppression Applied
+#' This function applies primary suppression to specified variables within a dataset. Values equal to or below a given threshold are replaced with a suppression character.
+#'
+#' @param orig_data A data frame or tibble containing the input data to have primary suppression applied.
+#' @param var_choice A character vector specifying the names of the variables to be rounded. All specified variables must exist in orig_data.
+#' @param char_supp A character used to indicate suppression. Default is `*`. Must be either `*` or `c`.
+#' @param sup_cond A single positive integer. Values equal to or below this threshold will be suppressed.
+#' @param zero A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will also be suppressed.
+#'
+#' @return A data frame or tibble with primary suppression applied to the specified variables. Original NA values are preserved.
 #' @export
 #'
-#' @examples inp_data <- dummy_wide
-#' @examples ps_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
-#' @examples ps_char <- "*"
-#' @examples ps_cond <- "3"
-#' @examples z_cond <- TRUE
-#' @examples ps_data <- Stat_Primary_Supress(inp_data, ps_vars, ps_char, ps_cond, z_cond)
-#' @examples inp_data
-#' @examples ps_data
-Stat_Primary_Supress <- function(orig_data, var_choice, char_supp, sup_cond, zero) {
-  # Exit Function with input data if no input variables are provided
-  if (is.null(var_choice)) {
-    # Data to return
-    primary_data <- orig_data
+#' @examples
+#' inp_data <- dummy_wide
+#' ps_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+#' ps_char <- "*"
+#' ps_cond <- 3
+#' z_cond <- TRUE
+#' ps_data <- Stat_Primary_Supress(inp_data, ps_vars, ps_char, ps_cond, z_cond)
+#' inp_data
+#' ps_data
+Stat_Primary_Supress <- function(orig_data, var_choice, char_supp = "*", sup_cond, zero = TRUE) {
 
-    # Warning Message
-    print("No input variables have been selected. The original input data will be returned.")
-
-    # Return unprocessed data
-    return(primary_data)
+  # Validate input arguments
+  if (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data)) {
+    stop("Error: 'orig_data' must be a dataframe or tibble.")
   }
 
-  # Variables to be processed
-  orig_var <- orig_data[, var_choice]
-
-  # Check if variable is given as vector (use for one pri var)
-  vec_check <- is.vector(orig_var)
-
-  # Transform vector into data frame (Used for when one pri var given)
-  if (vec_check == TRUE) {
-    orig_var <- data.frame(orig_var)
-
-    names(orig_var)[names(orig_var) == "orig_var"] <- var_choice
-  } else {
-
+  if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
+    stop("Error: 'var_choice' must be a non-empty character vector and all columns must exist in 'orig_data'.")
   }
 
-  # Replace any NAs with high value - this is changed back to NA for the disclosed data
-  orig_var[is.na(orig_var)] <- 999999999
+  if (!is.character(char_supp) || !(char_supp %in% c("*", "c"))) {
+    stop("Error: 'char_supp' must be either '*' or 'c'.")
+  }
 
-  # Ensures that replacement of NAs occurs
-  orig_data[, var_choice] <- orig_var
+  if (!is.numeric(sup_cond) || length(sup_cond) != 1 || sup_cond <= 0 || sup_cond %% 1 != 0) {
+    stop("Error: 'sup_cond' must be a single positive whole integer.")
+  }
 
-  # Check if column headers are all whole numbers
-  num_var_choice <- unlist(lapply(orig_data[var_choice], DistributionUtils::is.wholenumber))
+  if (!is.logical(zero) || length(zero) != 1) {
+    stop("Error: 'zero' must be a single logical value.")
+  }
 
-  # Only select variables with whole numbers
-  num_var_choice <- data.frame(num_var_choice) |>
-    dplyr::filter(num_var_choice == TRUE) |>
-    rownames(num_var_choice)
+  # Assign Suppression Dataset
+  ps_data <- orig_data
 
-  # Exit Function with input data if no numeric variables are provided
+  # Store original NA positions
+  na_positions <- is.na(ps_data)
+
+  # Replace NAs with a high value
+  ps_data <- ps_data |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::coalesce(., 999999999)))
+
+  # Filter numeric columns
+  num_var_choice <- var_choice[sapply(ps_data[var_choice], DistributionUtils::is.wholenumber)]
+
+  # Return original data if no numeric variables are selected
   if (length(num_var_choice) == 0) {
-    # Data to return
-    primary_data <- orig_data
-
-    # Transform NA value back to NA
-    primary_data[, var_choice][primary_data[, var_choice] == 999999999] <- NA
-    primary_data[, var_choice][primary_data[, var_choice] == "999999999"] <- NA
-
-    # Warning Message
-    print("No numeric variables have been selected. The original input data will be returned.")
-
-    # Return unprocessed data
-    return(primary_data)
+    warning("No numeric variables have been selected. The original input data will be returned.")
+    return(orig_data)
   }
 
-  # Store Variables choosen for Primary Suppression
-  x <- orig_data[, num_var_choice]
+  # Apply primary suppression to the selected variables
+  ps_data <- ps_data |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(num_var_choice), ~ ifelse((zero & . <= sup_cond & . > 0) | (!zero & . <= sup_cond), char_supp, .)))
 
-  # Transform vector into data frame (Used for when one pri var given)
-  if (vec_check == TRUE) {
-    x <- data.frame(x)
+  # Restore NA values in the suppressed data
+  ps_data[na_positions] <- NA
 
-    names(x)[names(x) == "x"] <- num_var_choice
-  } else {
-
-  }
-
-  # Copy of original data
-  primary_data <- orig_data
-
-  # If Statement - Leave zero unsuppress if checkbox is ticked - otherwise suppress zeros
-  if (zero == TRUE) {
-    # Applies Primary Suppression on all numbers below suppression condition apart from zero
-    primary_data[, num_var_choice] <- lapply(
-      x,
-      function(x) {
-        if (DistributionUtils::is.wholenumber(x)) {
-          replace(x, x <= sup_cond & x > 0, char_supp)
-        } else {
-          x
-        }
-      }
-    )
-  } else {
-    # Applies Primary Suppression on all numbers below suppression condition
-    primary_data[, num_var_choice] <- lapply(
-      x,
-      function(x) {
-        if (DistributionUtils::is.wholenumber(x)) {
-          replace(x, x <= sup_cond, char_supp)
-        } else {
-          x
-        }
-      }
-    )
-  }
-
-  # Add NAs back to data
-  primary_data[, var_choice][primary_data[, var_choice] == "999999999"] <- NA
-
-  # Primary Suppressed Data
-  return(primary_data)
+  # Return the suppressed data
+  return(ps_data)
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
