@@ -2,22 +2,22 @@
 % Please edit documentation in R/disclosure_functions.R
 \name{Stat_Round}
 \alias{Stat_Round}
-\title{Stat_Round Function}
+\title{Round Selected Variables in a Dataset}
 \usage{
 Stat_Round(orig_data, var_choice, round_cond)
 }
 \arguments{
-\item{orig_data}{Input Data to be disclosed}
+\item{orig_data}{A data frame containing the input data to be rounded.}
 
-\item{var_choice}{Choice of variables to be rounded}
+\item{var_choice}{A character vector specifying the names of the variables to be rounded.}
 
-\item{round_cond}{Rounding Base}
+\item{round_cond}{A single positive whole integer indicating the rounding base.}
 }
 \value{
-rounded_data Disclosed Data with Rounding Applied
+A data frame with the selected variables rounded to the specified base.
 }
 \description{
-Performs rounding on selected variables within a dataset to a chosen base
+This function rounds specified variables within a dataset to a chosen base. It handles missing values by temporarily replacing them with a high value, which is reverted back to \code{NA} after rounding.
 }
 \examples{
 inp_data <- dummy_wide
