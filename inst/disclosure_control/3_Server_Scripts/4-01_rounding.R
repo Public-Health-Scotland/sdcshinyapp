@@ -30,32 +30,28 @@ shiny::observe({
 ## 1. Rounding Selected Variables ----
 shiny::observeEvent(input$rounding, {
 
-    # Stop if variables are not selected
-    if (is.null(input$Disc_Variables_Round)){
+  # Check if any variables are selected for rounding
+  if (is.null(input$Disc_Variables_Round)) {
 
-      # Error Notification
-      shinyalert(title = "There is no input variables selected",
-                 text = "Please select input variables.",
-                 type = "error")
+    # Display an error notification if no variables are selected
+    shinyalert(title = "There is no input variables selected",
+               text = "Please select input variables.",
+               type = "error")
 
-      # Validation
-      shiny::validate(shiny::need(!is.null(input$Disc_Variables_Round), "There is no variables selected for rounding"))
+    # Validate to stop further execution if no variables are selected
+    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Round), "There is no variables selected for rounding"))
 
-      }
+  } else {
 
-  # Success Notification
-  shinyalert::shinyalert(title = "Data successfully rounded.", type = "success")
+    # Display a success notification if variables are selected
+    shinyalert::shinyalert(title = "Data successfully rounded.", type = "success")
 
-  # Store Non-Rounded Data
-  shiny::isolate({temp_round <- App_data$values})
+    # Perform the rounding operation on the selected variables
+    App_data$values <- sdcshinyapp::Stat_Round(App_data$values, input$Disc_Variables_Round, input$Round_Cond)
 
-  # Round Data
-  App_data$values <- sdcshinyapp::Stat_Round(temp_round, input$Disc_Variables_Round,input$Round_Cond)
+  }
+})
 
-  # Clear Non-Rounded Data
-  temp_round <- NULL
-
-  })
 
 # 3. Data Visualisation ----
 
