@@ -43,16 +43,16 @@ shiny::observeEvent(input$rounding, {
 
   } else {
 
-    # Check if Rounding Condition is a whole, positive integer
-    if (!is.numeric(input$Round_Cond) || input$Round_Cond <= 0 || input$Round_Cond %% 1 != 0) {
+    # Check if Rounding Condition is a whole, positive integer greater than one
+    if (!is.numeric(input$Round_Cond) || input$Round_Cond <= 1 || input$Round_Cond %% 1 != 0) {
 
       # Display an error notification if Rounding Condition is not valid
       shinyalert::shinyalert(title = "Invalid rounding condition",
-                             text = "Please enter a whole, positive integer for the rounding condition.",
+                             text = "Please enter a whole, positive integer greater than one for the rounding condition.",
                              type = "error")
 
       # Validate to stop further execution if Rounding Condition is not valid
-      shiny::validate(shiny::need(is.numeric(input$Round_Cond) && input$Round_Cond > 0 && input$Round_Cond %% 1 == 0, "Invalid rounding condition"))
+      shiny::validate(shiny::need(is.numeric(input$Round_Cond) && input$Round_Cond > 1 && input$Round_Cond %% 1 == 0, "Invalid rounding condition"))
 
     } else {
 
