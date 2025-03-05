@@ -42,6 +42,49 @@
 #' # View original and rounded data
 #' inp_data
 #' r_data
+Stat_Round <- function(orig_data, var_choice, round_cond) {
+
+# Validate input arguments
+if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
+  stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
+}
+
+if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
+  stop("Error: 'var_choice' must be a non-empty character vector and all columns must exist in 'orig_data'.")
+}
+
+if (!is.numeric(round_cond) || length(round_cond) != 1 || round_cond <= 1 || round_cond %% 1 != 0) {
+  stop("Error: 'round_cond' must be a single positive whole integer greater than 1.")
+}
+
+# Replace NA values with a high value (999999999) to avoid issues during rounding
+r_data <- orig_data |>
+  dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ tidyr::replace_na(., 999999999)))
+
+# Determine the value to replace NA after rounding
+rounding_NA_value <- plyr::round_any(999999999, round_cond, round)
+
+# Identify variables that are whole numbers
+num_var_choice <- var_choice[sapply(r_data[var_choice], DistributionUtils::is.wholenumber)]
+
+# Return original data if no numeric variables are selected
+if (length(num_var_choice) == 0) {
+  warning("No numeric variables have been selected. The original input data will be returned.")
+  return(orig_data)
+}
+
+# Round the selected variables to the specified base
+r_data <- r_data |>
+  dplyr::mutate(dplyr::across(dplyr::all_of(num_var_choice), ~ plyr::round_any(., round_cond, round)))
+
+# Restore NA values in the rounded data
+r_data <- r_data |>
+  dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::na_if(., rounding_NA_value)))
+
+# Return the rounded data
+return(r_data)
+
+}
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # 2. Swapping ----
