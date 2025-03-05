@@ -34,7 +34,7 @@ shiny::observeEvent(input$rounding, {
   if (is.null(input$Disc_Variables_Round)) {
 
     # Display an error notification if no variables are selected
-    shinyalert(title = "There is no input variables selected",
+    shinyalert::shinyalert(title = "There is no input variables selected",
                text = "Please select input variables.",
                type = "error")
 
