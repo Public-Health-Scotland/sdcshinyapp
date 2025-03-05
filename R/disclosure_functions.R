@@ -17,62 +17,31 @@
 
 #' Round Selected Variables in a Dataset
 #'
-#' This function rounds specified variables within a dataset to a chosen base. It handles missing values by temporarily replacing them with a high value, which is reverted back to `NA` after rounding.
-#' @param orig_data A data frame containing the input data to be rounded.
-#' @param var_choice A character vector specifying the names of the variables to be rounded.
-#' @param round_cond A single positive whole integer indicating the rounding base.
+#' This function rounds specified numeric variables within a dataset to a chosen base. It handles missing values by temporarily replacing them with a high value, which is reverted back to `NA` after rounding.
 #'
-#' @return A data frame with the selected variables rounded to the specified base.
+#' @param orig_data A data frame or tibble containing the input data to be rounded.
+#' @param var_choice A character vector specifying the names of the variables to be rounded. All specified variables must exist in `orig_data`.
+#' @param round_cond A single positive whole integer greater than 1 indicating the rounding base.
+#'
+#' @return A data frame with the selected variables rounded to the specified base. Non-numeric variables are not modified.
 #' @export
 #'
-#' @examples inp_data <- dummy_wide
-#' @examples r_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
-#' @examples r_base <- 3
-#' @examples r_data <- Stat_Round(inp_data, r_vars, r_base)
-#' @examples inp_data
-#' @examples r_data
-Stat_Round <- function(orig_data, var_choice, round_cond) {
-
-  # Validate input arguments
-  if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
-    stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
-  }
-
-  if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
-    stop("Error: 'var_choice' must be a non-empty character vector and all columns must exist in 'orig_data'.")
-  }
-
-  if (!is.numeric(round_cond) || length(round_cond) != 1 || round_cond <= 0 || round_cond %% 1 != 0) {
-    stop("Error: 'round_cond' must be a single positive whole integer.")
-  }
-
-  # Replace NA values with a high value (999999999) to avoid issues during rounding
-  r_data <- orig_data |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ tidyr::replace_na(., 999999999)))
-
-  # Determine the value to replace NA after rounding
-  rounding_NA_value <- plyr::round_any(999999999, round_cond, round)
-
-  # Identify variables that are whole numbers
-  num_var_choice <- var_choice[sapply(r_data[var_choice], DistributionUtils::is.wholenumber)]
-
-  # Return original data if no numeric variables are selected
-  if (length(num_var_choice) == 0) {
-    warning("No numeric variables have been selected. The original input data will be returned.")
-    return(orig_data)
-  }
-
-  # Round the selected variables to the specified base
-  r_data <- r_data |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(num_var_choice), ~ plyr::round_any(., round_cond, round)))
-
-  # Restore NA values in the rounded data
-  r_data <- r_data |>
-    dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::na_if(., rounding_NA_value)))
-
-  # Return the rounded data
-  return(r_data)
-}
+#' @examples
+#' # Example dataset
+#' inp_data <- dummy_wide
+#'
+#' # Variables to be rounded
+#' r_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+#'
+#' # Rounding base
+#' r_base <- 3
+#'
+#' # Apply rounding function
+#' r_data <- Stat_Round(inp_data, r_vars, r_base)
+#'
+#' # View original and rounded data
+#' inp_data
+#' r_data
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 # 2. Swapping ----
