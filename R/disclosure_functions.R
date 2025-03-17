@@ -236,8 +236,8 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 Stat_Primary_Supress <- function(orig_data, var_choice, char_supp = "*", sup_cond, zero = TRUE) {
 
   # Validate input arguments
-  if (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data)) {
-    stop("Error: 'orig_data' must be a dataframe or tibble.")
+  if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
+    stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
   }
 
   if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
