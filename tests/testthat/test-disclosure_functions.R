@@ -68,8 +68,8 @@ ps_sample_data <- data.frame(
   )
 
 testthat::test_that("Function handles non-dataframe input", {
-  testthat::expect_error(sdcshinyapp::Stat_Primary_Supress(NULL, c("20-24"), "*", 3, TRUE), "Error: 'orig_data' must be a dataframe or tibble.")
-  testthat::expect_error(sdcshinyapp::Stat_Primary_Supress(list(), c("20-24"), "*", 3, TRUE), "Error: 'orig_data' must be a dataframe or tibble.")
+  testthat::expect_error(sdcshinyapp::Stat_Primary_Supress(NULL, c("20-24"), "*", 3, TRUE), "Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
+  testthat::expect_error(sdcshinyapp::Stat_Primary_Supress(list(), c("20-24"), "*", 3, TRUE), "Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
 })
 
 testthat::test_that("Function handles non-existent columns", {
