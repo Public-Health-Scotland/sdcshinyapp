@@ -102,6 +102,6 @@ testthat::test_that("Function preserves NA values", {
 })
 
 testthat::test_that("Function returns original data if no numeric variables are selected", {
-  result <- Stat_Primary_Supress(ps_sample_data, c("Total"), "*", 3, TRUE)
+  result <- sdcshinyapp::Stat_Primary_Supress(ps_sample_data, c("Total"), "*", 3, TRUE)
   testthat::expect_equal(result, ps_sample_data)
 })
