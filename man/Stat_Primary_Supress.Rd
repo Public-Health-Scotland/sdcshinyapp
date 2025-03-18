@@ -21,7 +21,7 @@ Stat_Primary_Supress(
 
 \item{sup_cond}{A single positive integer. Values equal to or below this threshold will be suppressed.}
 
-\item{zero}{A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will also be suppressed.}
+\item{zero}{A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.}
 }
 \value{
 A data frame or tibble with primary suppression applied to the specified variables. Original NA values are preserved.
