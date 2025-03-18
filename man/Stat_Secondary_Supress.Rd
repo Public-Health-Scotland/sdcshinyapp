@@ -2,44 +2,61 @@
 % Please edit documentation in R/disclosure_functions.R
 \name{Stat_Secondary_Supress}
 \alias{Stat_Secondary_Supress}
-\title{Stat_Secondary_Supress Function}
+\title{Perform Primary & Secondary Suppression on Selected Variables}
 \usage{
 Stat_Secondary_Supress(
   orig_data,
   pri_var_choice,
   sec_var_choice,
-  char_supp,
+  char_supp = "*",
   sup_cond,
-  zero
+  zero = TRUE
 )
 }
 \arguments{
-\item{orig_data}{Input Data to be disclosed}
+\item{orig_data}{A data frame or tibble containing the input data to have primary & secondary suppression applied.}
 
-\item{pri_var_choice}{Choice of variables to be suppressed using Primary Suppression}
+\item{pri_var_choice}{A character vector specifying the variable to be suppressed using primary suppression. Only one variable can be selected and it must exist in orig_data.}
 
-\item{sec_var_choice}{Choice of variables to be suppressed using Secondary Suppression}
+\item{sec_var_choice}{A character vector specifying the variables to be suppressed using secondary suppression. All specified variables must exist in orig_data.}
 
-\item{char_supp}{Character used to indicate suppression}
+\item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
 
-\item{sup_cond}{Values equal to or below this value will be suppressed}
+\item{sup_cond}{A numeric value; values equal to or below this threshold will be suppressed. For secondary suppression, the next lowest number in a row will be suppression if only one secondary values has been suppressed.}
 
-\item{zero}{Indicates if 0 should be suppressed}
+\item{zero}{A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.}
 }
 \value{
-secondary_data Data with Primary & Secondary Suppression Applied
+A data frame or tibble with primary and secondary suppression applied to the specified variables. Original NA values are preserved.
 }
 \description{
-Performs Primary & Secondary Suppression on selected variables within a Dataset
+This function applies primary and secondary suppression on selected variables within a dataset. Primary suppression is applied to specified variables, followed by secondary suppression to further protect sensitive information.
 }
 \examples{
+# Example dataset
 inp_data <- dummy_wide
+
+# Variables for primary suppression
 ps_vars <- "Total"
+
+# Variables for secondary suppression
 ss_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59")
+
+# Suppression character
 s_char <- "*"
+
+# Suppression condition
 s_cond <- 3
+
+# Suppress zeros
 z_cond <- TRUE
+
+# Apply suppression
 s_data <- Stat_Secondary_Supress(inp_data, ps_vars, ss_vars, s_char, s_cond, z_cond)
+
+# View original data
 inp_data
+
+# View suppressed data
 s_data
 }
