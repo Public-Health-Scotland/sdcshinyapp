@@ -45,28 +45,22 @@ shiny::observeEvent(input$pri_sup, {
   # Stop if variables are not selected
   if (is.null(input$Disc_Variables_Pri_Supp)){
 
-      # Error Notification
-      shinyalert::shinyalert(title = "There is no variables selected for primary suppression",
-                             text = "Please select variables.",
-                             type = "error")
+    # Error Notification
+    shinyalert::shinyalert(title = "There is no input variables selected",
+                           text = "Please select input variables.",
+                           type = "error")
 
-      # Validation
-      shiny::validate(shiny::need(!is.null(input$Disc_Variables_Pri_Supp), "There is no variables selected for primary suppression"))
+    # Validation
+    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Pri_Supp), "There is no variables selected for primary suppression"))
 
-      }
+    }
 
   # Success Notification
   shinyalert::shinyalert(title = "Primary Suppression successful.",
                          type = "success")
 
-  # Store Non-Suppressed Data
-  shiny::isolate({temp_pri_supp <- App_data$values})
-
   # Primary Suppression
-  App_data$values <- sdcshinyapp::Stat_Primary_Supress(temp_pri_supp, input$Disc_Variables_Pri_Supp,input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
-
-  # Clear Non-Suppressed Data
-  temp_pri_supp <- NULL
+  App_data$values <- sdcshinyapp::Stat_Primary_Supress(App_data$values, input$Disc_Variables_Pri_Supp,input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
 
   })
 
@@ -74,31 +68,30 @@ shiny::observeEvent(input$pri_sup, {
 ## 2. Primary & Secondary Suppression ----
 shiny::observeEvent(input$pri_sec_sup, {
 
-  # Stop if variables are not selected
-  if (is.null(input$Disc_Variables_Pri_Supp) | is.null(input$Disc_Variables_Secondary_Supp)) {
+  # Stop if variables are not selected or if more than one variable is selected for primary suppression or only one secondary suppression variable is selected
+  if (is.null(input$Disc_Variables_Pri_Supp) || is.null(input$Disc_Variables_Secondary_Supp) || length(input$Disc_Variables_Pri_Supp) != 1 || length(input$Disc_Variables_Secondary_Supp) < 2) {
 
     # Error Notification
-    shinyalert::shinyalert(title = "There is no variables selected for primary and/or secondary suppression.",
-                           text = "Please select variables.",
-                           type = "error")
+    shinyalert::shinyalert(
+      title = "Invalid selection for primary and/or secondary suppression.",
+      text = "Please select exactly one variable for primary suppression and at least two variables for secondary suppression.",
+      type = "error"
+    )
 
     # Validation
-    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Pri_Supp), "There is no variables selected for primary suppression"),
-                    shiny::need(!is.null(input$Disc_Variables_Secondary_Supp), "There is no variables selected for secondary suppression"))
-
-    }
+    shiny::validate(
+      shiny::need(!is.null(input$Disc_Variables_Pri_Supp), "There are no variables selected for primary suppression"),
+      shiny::need(length(input$Disc_Variables_Pri_Supp) == 1, "Please select exactly one variable for primary suppression"),
+      shiny::need(!is.null(input$Disc_Variables_Secondary_Supp), "There are no variables selected for secondary suppression"),
+      shiny::need(length(input$Disc_Variables_Secondary_Supp) >= 2, "Please select at least two variables for secondary suppression")
+    )
+  }
 
   # Success Notification
   shinyalert::shinyalert(title = "Primary & secondary suppression successful.", type = "success")
 
-  # Store Non-Suppressed Data
-  shiny::isolate({temp_supp <- App_data$values})
-
   # Primary & Secondary Suppression
-  App_data$values <- sdcshinyapp::Stat_Secondary_Supress(temp_supp, input$Disc_Variables_Pri_Supp, input$Disc_Variables_Secondary_Supp, input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
-
-  # Clear Non-Suppressed Data
-  temp_supp <- NULL
+  App_data$values <- sdcshinyapp::Stat_Secondary_Supress(App_data$values, input$Disc_Variables_Pri_Supp, input$Disc_Variables_Secondary_Supp, input$Supp_Chars, input$Pri_Supp_Cond, input$zero_sup)
 
   })
 
