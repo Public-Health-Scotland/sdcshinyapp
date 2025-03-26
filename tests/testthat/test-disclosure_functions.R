@@ -105,3 +105,95 @@ testthat::test_that("Function returns original data if no numeric variables are 
   result <- sdcshinyapp::Stat_Primary_Supress(ps_sample_data, c("Total"), "*", 3, TRUE)
   testthat::expect_equal(result, ps_sample_data)
 })
+
+# Secondary Suppression Test ----
+
+testthat::test_that("Stat_Secondary_Supress works correctly", {
+  # Example dataset
+  inp_data <- data.frame(
+    Total = c(1, 2, 3, 4, 5, NA),
+    `20-24` = c(1, 2, 3, 4, 5, NA),
+    `25-29` = c(1, 2, 3, 4, 5, NA),
+    `30-34` = c(1, 2, 3, 4, 5, NA),
+    `35-39` = c(1, 2, 3, 4, 5, NA),
+    `40-44` = c(1, 2, 3, 4, 5, NA),
+    `45-49` = c(1, 2, 3, 4, 5, NA),
+    `50-54` = c(1, 2, 3, 4, 5, NA),
+    `55-59` = c(1, 2, 3, 4, 5, NA),
+    check.names = FALSE, stringsAsFactors = FALSE
+    )
+
+  # Variables for primary suppression
+  ps_vars <- "Total"
+
+  # Variables for secondary suppression
+  ss_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59")
+
+  # Suppression character
+  s_char <- "*"
+
+  # Suppression condition
+  s_cond <- 3
+
+  # Suppress zeros
+  z_cond <- TRUE
+
+  # Apply suppression
+  s_data <- sdcshinyapp::Stat_Secondary_Supress(inp_data, ps_vars, ss_vars, s_char, s_cond, z_cond)
+
+  # Test primary suppression
+  testthat::expect_equal(s_data$Total, c("*", "*", "*", 4, 5, NA))
+
+  # Test secondary suppression
+  testthat::expect_equal(s_data$`20-24`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`25-29`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`30-34`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`35-39`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`40-44`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`45-49`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`50-54`, c("*", "*", "*", 4, 5, NA))
+  testthat::expect_equal(s_data$`55-59`, c("*", "*", "*", 4, 5, NA))
+
+  # Test suppression character
+  testthat::expect_equal(s_data$Total[1], s_char)
+
+  # Test suppression condition
+  testthat::expect_equal(s_data$Total[4], "4")
+
+  # Test zero suppression
+  testthat::expect_equal(s_data$Total[6], NA_character_)
+})
+
+testthat::test_that::testthat::test_that("Stat_Secondary_Supress handles invalid input correctly", {
+  # Example dataset
+  inp_data <- data.frame(
+    Total = c(1, 2, 3, 4, 5, NA),
+    `20-24` = c(1, 2, 3, 4, 5, NA),
+    `25-29` = c(1, 2, 3, 4, 5, NA),
+    `30-34` = c(1, 2, 3, 4, 5, NA),
+    `35-39` = c(1, 2, 3, 4, 5, NA),
+    `40-44` = c(1, 2, 3, 4, 5, NA),
+    `45-49` = c(1, 2, 3, 4, 5, NA),
+    `50-54` = c(1, 2, 3, 4, 5, NA),
+    `55-59` = c(1, 2, 3, 4, 5, NA),
+    check.names = FALSE, stringsAsFactors = FALSE
+  )
+
+  # Test missing data
+  testthat::expect_error(sdcshinyapp::Stat_Secondary_Supress(NULL, "Total", c("20-24", "25-29"), "*", 3, TRUE), "Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
+
+  # Test invalid primary variable
+  testthat::expect_error(sdcshinyapp::Stat_Secondary_Supress(inp_data, "Invalid", c("20-24", "25-29"), "*", 3, TRUE), "Error: 'pri_var_choice' must be a single character string and must exist in 'orig_data'.")
+
+  # Test invalid secondary variables
+  testthat::expect_error(sdcshinyapp::Stat_Secondary_Supress(inp_data, "Total", c("Invalid1", "Invalid2"), "*", 3, TRUE), "Error: 'sec_var_choice' must be a character vector with at least two elements, and all columns must exist in 'orig_data'.")
+
+  # Test invalid suppression character
+  # testthat::expect_error(sdcshinyapp::Stat_Secondary_Supress(inp_data, "Total", c("20-24", "25-29"), "x", 3, TRUE), "Error: 'char_supp' must be either '*' or 'c'.")
+
+  # Test invalid suppression condition
+  testthat::expect_error(sdcshinyapp::Stat_Secondary_Supress(inp_data, "Total", c("20-24", "25-29"), "*", -1, TRUE), "Error: 'sup_cond' must be a single positive whole integer.")
+
+  # Test invalid zero suppression
+  testthat::expect_error(sdcshinyapp::Stat_Secondary_Supress(inp_data, "Total", c("20-24", "25-29"), "*", 3, "TRUE"), "Error: 'zero' must be a single logical value.")
+})
