@@ -90,121 +90,91 @@ return(r_data)
 # 2. Swapping ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-#' Stat_Swap Function
-#' @description Performs rounding on selected variables within a Dataset
-#' @param orig_data Input Data to be disclosed
-#' @param var_choice Choice of variables to be swapped
-#' @param swap_cond Swapping condtion meaning values below this in a dataset must be swapped
+#' Swap Selected Variables in a Dataset
 #'
-#' @return Disclosed Data with Swapping Applied
+#' @description
+#' Performs rounding on selected variables within a dataset by swapping values
+#' that are below a specified condition.
+#'
+#' @param orig_data
+#' A dataframe or tibble containing the input data to be disclosed. This dataset
+#' should include the variables that need to be swapped.
+#'
+#' @param var_choice
+#' A character vector specifying the names of the variables to be swapped. These
+#' variables must exist in the `orig_data`.
+#'
+#' @param swap_cond
+#' A single positive whole integer indicating the swapping condition. Values
+#' below this threshold in the specified variables will be swapped.
+#'
+#' @return
+#' A dataframe or tibble with the swapping applied to the selected variables.
+#' The original data is returned if no numeric variables are selected.
+#'
 #' @export
 #'
-#' @examples inp_data <- dummy_wide
-#' @examples s_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
-#' @examples s_cond <- 3
-#' @examples s_data <- Stat_Swap(inp_data, s_vars, s_cond)
-#' @examples inp_data
-#' @examples s_data
+#' @examples
+#' inp_data <- dummy_wide
+#' s_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+#' s_cond <- 3
+#' s_data <- Stat_Swap(inp_data, s_vars, s_cond)
+#' inp_data
+#' s_data
 Stat_Swap <- function(orig_data, var_choice, swap_cond) {
-  # Exit Function with input data if no input variables are provided
-  if (is.null(var_choice)) {
-    # Data to return
-    swapped_data <- orig_data
 
-    # Warning Message
-    print("No input variables have been selected. The original input data will be returned.")
-
-    # Return unprocessed data
-    return(swapped_data)
+  # Validate input arguments
+  if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
+    stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
   }
 
-  # Variables to be processed
-  orig_var <- orig_data[, var_choice]
-
-  # Check if variable is given as vector (use for one pri var)
-  vec_check <- is.vector(orig_var)
-
-  # Transform vector into data frame (Used for when one pri var given)
-  if (vec_check == TRUE) {
-    orig_var <- data.frame(orig_var)
-
-    names(orig_var)[names(orig_var) == "orig_var"] <- var_choice
-  } else {
-
+  if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
+    stop("Error: 'var_choice' must be a non-empty character vector and all columns must exist in 'orig_data'.")
   }
 
-  # Replace any NAs with high value - this is changed back to NA for the disclosed data
-  orig_var[is.na(orig_var)] <- 999999999
+  if (!is.numeric(swap_cond) || length(swap_cond) != 1 || swap_cond <= 0 || swap_cond %% 1 != 0) {
+    stop("Error: 'swap_cond' must be a single positive whole integer.")
+  }
 
-  # Ensures that replacement of NAs occurs
-  orig_data[, var_choice] <- orig_var
+  # Replace NAs with a high value and filter numeric columns
+  swapped_data <- orig_data |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::coalesce(., 999999999)))
 
-  # Copy of original data to process
-  swapped_data <- orig_data
+  # Filter numeric columns
+  num_var_choice <- var_choice[sapply(swapped_data[var_choice], DistributionUtils::is.wholenumber)]
 
-  # Check if column headers are all whole numbers
-  num_var_choice <- unlist(lapply(orig_data[var_choice], DistributionUtils::is.wholenumber))
-
-  # Only select variables with whole numbers
-  num_var_choice <- data.frame(num_var_choice) |>
-    dplyr::filter(num_var_choice == TRUE) |>
-    rownames(num_var_choice)
-
-  # Exit Function with input data if no numeric variables are provided
+  # Return original data if no numeric variables are selected
   if (length(num_var_choice) == 0) {
-    # Data to return
-    swapped_data <- orig_data
-
-    # Transform NA value back to NA
-    swapped_data[, var_choice][swapped_data[, var_choice] == 999999999] <- NA
-    swapped_data[, var_choice][swapped_data[, var_choice] == "999999999"] <- NA
-
-    # Warning Message
-    print("No numeric variables have been selected. The original input data will be returned.")
-
-    # Return unprocessed data
-    return(swapped_data)
+    warning("No numeric variables have been selected. The original input data will be returned.")
+    return(orig_data)
   }
 
-  # Get number of columns containing whole numbers
-  var_swap_len <- length(num_var_choice)
+  # Process each numeric column
+  for (var in num_var_choice) {
 
-  # For Loop to process each numeric column
-  for (i in 1:var_swap_len) {
-    # checks if variable value is less than or equal to the swapping condition
-    chk <- swapped_data[, num_var_choice[i]] <= swap_cond
-    chk <- which(chk == TRUE)
-    ind_numbers <- length(chk) # For each column, calculate how many values must be swapped
+    # Get position in column, which are <= swap_cond
+    chk_indices <- which(swapped_data[[var]] <= swap_cond)
 
-    # If statement for columns where values are swapped, else statements if no value in a column needs to be swapped
-    if (length(ind_numbers) > 0) {
-      # Allows for indices position to be swapped
-      swapindices <- sample(x = c(chk), ind_numbers)
-      newindices <- sample(swapindices, ind_numbers)
+    # Only perform swap if more than one value in column <= swap_cond
+    if (length(chk_indices) > 1) {
 
-      # If statement when only one value is below swapping condition to ensure no swapping occurs
-      if (length(swapindices) > 1) {
-        # Performs Swapping
-        swapped_data[swapindices, num_var_choice[i]] <- swapped_data[newindices, num_var_choice[i]]
-        # Clear Indices Values
-        rm(swapindices, newindices)
-      } else {
-        # Clear Indices Values
-        rm(swapindices, newindices)
-        # No Cell Swapping Occurs
-        swapped_data <- swapped_data
+      swap_indices <- sample(chk_indices)
+
+      # Ensure Swapping always occurs
+      while (all(swap_indices == chk_indices)) {
+        swap_indices <- sample(chk_indices)
       }
-    } else {
-      # No Cell Swapping Occurs
-      swapped_data <- swapped_data
+
+      # Perform Swapping
+      swapped_data[chk_indices, var] <- swapped_data[swap_indices, var]
     }
   }
 
   # Add NAs back to data
   swapped_data[, var_choice][swapped_data[, var_choice] == 999999999] <- NA
 
-  # Swapped Data
   return(swapped_data)
+
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
