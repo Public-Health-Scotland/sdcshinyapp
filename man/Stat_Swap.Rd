@@ -27,7 +27,7 @@ that are below a specified condition.
 \examples{
 inp_data <- dummy_wide
 s_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
-s_cond <- 3
+s_cond <- 5
 s_data <- Stat_Swap(inp_data, s_vars, s_cond)
 inp_data
 s_data
