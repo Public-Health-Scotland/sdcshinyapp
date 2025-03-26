@@ -294,7 +294,7 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp = "*", sup_con
 #' @description This function applies primary and secondary suppression on selected variables within a dataset. Primary suppression is applied to specified variables, followed by secondary suppression to further protect sensitive information.
 #' @param orig_data A data frame or tibble containing the input data to have primary & secondary suppression applied.
 #' @param pri_var_choice A character vector specifying the variable to be suppressed using primary suppression. Only one variable can be selected and it must exist in orig_data.
-#' @param sec_var_choice A character vector specifying the variables to be suppressed using secondary suppression. All specified variables must exist in orig_data.
+#' @param sec_var_choice A character vector specifying the variables to be suppressed using secondary suppression. All specified variables must exist in orig_data and at least two variables must be selected.
 #' @param char_supp A character used to indicate suppression. Default is `*`. Must be either `*` or `c`.
 #' @param sup_cond A numeric value; values equal to or below this threshold will be suppressed. For secondary suppression, the next lowest number in a row will be suppression if only one secondary values has been suppressed.
 #' @param zero A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.
