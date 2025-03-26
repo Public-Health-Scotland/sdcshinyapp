@@ -18,7 +18,7 @@ Stat_Secondary_Supress(
 
 \item{pri_var_choice}{A character vector specifying the variable to be suppressed using primary suppression. Only one variable can be selected and it must exist in orig_data.}
 
-\item{sec_var_choice}{A character vector specifying the variables to be suppressed using secondary suppression. All specified variables must exist in orig_data.}
+\item{sec_var_choice}{A character vector specifying the variables to be suppressed using secondary suppression. All specified variables must exist in orig_data and at least two variables must be selected.}
 
 \item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
 
