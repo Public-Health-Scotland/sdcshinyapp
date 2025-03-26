@@ -93,7 +93,7 @@ return(r_data)
 #' Swap Selected Variables in a Dataset
 #'
 #' @description
-#' Performs rounding on selected variables within a dataset by swapping values
+#' Performs swapping on selected variables within a dataset by swapping values
 #' that are below a specified condition.
 #'
 #' @param orig_data
