@@ -17,7 +17,7 @@ Stat_Round(orig_data, var_choice, round_cond)
 A data frame with the selected variables rounded to the specified base. Non-numeric variables are not modified.
 }
 \description{
-This function rounds specified numeric variables within a dataset to a chosen base. It handles missing values by temporarily replacing them with a high value, which is reverted back to \code{NA} after rounding.
+This function rounds specified numeric variables within a dataset to a chosen base.
 }
 \examples{
 # Example dataset
@@ -29,10 +29,12 @@ r_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-5
 # Rounding base
 r_base <- 3
 
-# Apply rounding function
+# Apply rounding
 r_data <- Stat_Round(inp_data, r_vars, r_base)
 
-# View original and rounded data
+# View original data
 inp_data
+
+# View rounded data
 r_data
 }

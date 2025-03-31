@@ -30,12 +30,27 @@ A data frame or tibble with primary suppression applied to the specified variabl
 This function applies primary suppression to specified variables within a dataset. Values equal to or below a given threshold are replaced with a suppression character.
 }
 \examples{
+# Example dataset
 inp_data <- dummy_wide
+
+# Variables for primary suppression
 ps_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+
+# Suppression character
 ps_char <- "*"
+
+# Suppression condition
 ps_cond <- 3
+
+# Suppress zeros
 z_cond <- TRUE
+
+# Apply suppression
 ps_data <- Stat_Primary_Supress(inp_data, ps_vars, ps_char, ps_cond, z_cond)
+
+# View original data
 inp_data
+
+# View suppressed data
 ps_data
 }
