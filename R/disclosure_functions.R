@@ -15,17 +15,13 @@
 # 1. Rounding ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-#' Round Selected Variables in a Dataset
-#'
-#' This function rounds specified numeric variables within a dataset to a chosen base. It handles missing values by temporarily replacing them with a high value, which is reverted back to `NA` after rounding.
-#'
+#' @title Round Selected Variables in a Dataset
+#' @description This function rounds specified numeric variables within a dataset to a chosen base.
 #' @param orig_data A data frame or tibble containing the input data to be rounded.
 #' @param var_choice A character vector specifying the names of the variables to be rounded. All specified variables must exist in `orig_data`.
 #' @param round_cond A single positive whole integer greater than 1 indicating the rounding base.
-#'
 #' @return A data frame with the selected variables rounded to the specified base. Non-numeric variables are not modified.
 #' @export
-#'
 #' @examples
 #' # Example dataset
 #' inp_data <- dummy_wide
@@ -36,11 +32,13 @@
 #' # Rounding base
 #' r_base <- 3
 #'
-#' # Apply rounding function
+#' # Apply rounding
 #' r_data <- Stat_Round(inp_data, r_vars, r_base)
 #'
-#' # View original and rounded data
+#' # View original data
 #' inp_data
+#'
+#' # View rounded data
 #' r_data
 Stat_Round <- function(orig_data, var_choice, round_cond) {
 
@@ -90,36 +88,30 @@ return(r_data)
 # 2. Swapping ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-#' Swap Selected Variables in a Dataset
-#'
-#' @description
-#' Performs swapping on selected variables within a dataset by swapping values
-#' that are below a specified condition.
-#'
-#' @param orig_data
-#' A dataframe or tibble containing the input data to be disclosed. This dataset
-#' should include the variables that need to be swapped.
-#'
-#' @param var_choice
-#' A character vector specifying the names of the variables to be swapped. These
-#' variables must exist in the `orig_data`.
-#'
-#' @param swap_cond
-#' A single positive whole integer indicating the swapping condition. Values
-#' below this threshold in the specified variables will be swapped.
-#'
-#' @return
-#' A dataframe or tibble with the swapping applied to the selected variables.
-#' The original data is returned if no numeric variables are selected.
-#'
+#' @title Swap Selected Variables in a Dataset
+#' @description Performs swapping on selected variables within a dataset by swapping values that are below a specified condition.
+#' @param orig_data A dataframe or tibble containing the input data to be swapped.
+#' @param var_choice A character vector specifying the names of the variables to be swapped. These variables must exist in `orig_data`.
+#' @param swap_cond A single positive whole integer indicating the swapping condition. Values equal to or below this threshold in the specified variables will be swapped.
+#' @return A dataframe or tibble with the swapping applied to the selected variables.  The original data is returned if no numeric variables are selected.
 #' @export
-#'
 #' @examples
+#' # Example dataset
 #' inp_data <- dummy_wide
+#'
+#' # Variables for swapping
 #' s_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+#'
+#' # Swapping condition
 #' s_cond <- 5
+#'
+#' # Apply Swapping
 #' s_data <- Stat_Swap(inp_data, s_vars, s_cond)
+#'
+#' # View original data
 #' inp_data
+#'
+#' # View swapped data
 #' s_data
 Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 
@@ -181,27 +173,38 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 # 3. Primary Suppression ----
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-#' Perform Primary Suppression on Selected Variables
-#'
-#' This function applies primary suppression to specified variables within a dataset. Values equal to or below a given threshold are replaced with a suppression character.
-#'
+#' @title Perform Primary Suppression on Selected Variables
+#' @description This function applies primary suppression to specified variables within a dataset. Values equal to or below a given threshold are replaced with a suppression character.
 #' @param orig_data A data frame or tibble containing the input data to have primary suppression applied.
 #' @param var_choice A character vector specifying the names of the variables to be rounded. All specified variables must exist in orig_data.
 #' @param char_supp A character used to indicate suppression. Default is `*`. Must be either `*` or `c`.
 #' @param sup_cond A single positive integer. Values equal to or below this threshold will be suppressed.
 #' @param zero A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.
-#'
 #' @return A data frame or tibble with primary suppression applied to the specified variables. Original NA values are preserved.
 #' @export
-#'
 #' @examples
+#' # Example dataset
 #' inp_data <- dummy_wide
+#'
+#' # Variables for primary suppression
 #' ps_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+#'
+#' # Suppression character
 #' ps_char <- "*"
+#'
+#' # Suppression condition
 #' ps_cond <- 3
+#'
+#' # Suppress zeros
 #' z_cond <- TRUE
+#'
+#' # Apply suppression
 #' ps_data <- Stat_Primary_Supress(inp_data, ps_vars, ps_char, ps_cond, z_cond)
+#'
+#' # View original data
 #' inp_data
+#'
+#' # View suppressed data
 #' ps_data
 Stat_Primary_Supress <- function(orig_data, var_choice, char_supp = "*", sup_cond, zero = TRUE) {
 
