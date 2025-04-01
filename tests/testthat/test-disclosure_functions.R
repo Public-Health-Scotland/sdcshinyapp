@@ -77,18 +77,10 @@ test_that("Stat_Swap handles invalid swap_cond", {
   expect_error(Stat_Swap(swap_sample_data, "A", 1.5), "Error: 'swap_cond' must be a single positive whole integer")
 })
 
-# test_that("Stat_Swap returns original data if no numeric variables are selected", {
-#   result <- Stat_Swap(swap_sample_data, "C", 2)
-#   expect_equal(result, swap_sample_data)
-# })
-
-# test_that("Stat_Swap swaps values correctly", {
-#   result <- Stat_Swap(swap_sample_data, c("A", "B"), 3)
-#   expect_true(all(result$A[!is.na(result$A)] <= 3))
-#   expect_true(all(result$B[!is.na(result$B)] <= 3))
-#   expect_true(any(result$A != swap_sample_data$A))
-#   expect_true(any(result$B != swap_sample_data$B))
-# })
+test_that("Stat_Swap returns original data if no numeric variables are selected", {
+  result <- Stat_Swap(swap_sample_data, "C", 2)
+  expect_equal(result, swap_sample_data)
+})
 
 test_that("Stat_Swap handles NA values correctly", {
   result <- Stat_Swap(swap_sample_data, c("A", "B"), 3)
