@@ -128,16 +128,23 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
     stop("Error: 'swap_cond' must be a single positive whole integer.")
   }
 
+  # Filter numeric columns from var_choice - return orig_data if no numeric variables selected
+  numeric_vars <- var_choice[sapply(orig_data[var_choice], is.numeric)]
+  if (length(numeric_vars) == 0) {
+    message("Warning: 'var_choice' must contain at least one numeric variable.")
+    return(orig_data)
+  }
+
   # Replace NAs with a high value and filter numeric columns
   swapped_data <- orig_data |>
     dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::coalesce(., 999999999)))
 
-  # Filter numeric columns
+  # Filter by whole number columns
   num_var_choice <- var_choice[sapply(swapped_data[var_choice], DistributionUtils::is.wholenumber)]
 
   # Return original data if no numeric variables are selected
   if (length(num_var_choice) == 0) {
-    warning("No numeric variables have been selected. The original input data will be returned.")
+    warning("No whole numeric variables have been selected. The original input data will be returned.")
     return(orig_data)
   }
 
