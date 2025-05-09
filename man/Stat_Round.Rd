@@ -2,28 +2,39 @@
 % Please edit documentation in R/disclosure_functions.R
 \name{Stat_Round}
 \alias{Stat_Round}
-\title{Stat_Round Function}
+\title{Round Selected Variables in a Dataset}
 \usage{
 Stat_Round(orig_data, var_choice, round_cond)
 }
 \arguments{
-\item{orig_data}{Input Data to be disclosed}
+\item{orig_data}{A data frame or tibble containing the input data to be rounded.}
 
-\item{var_choice}{Choice of variables to be rounded}
+\item{var_choice}{A character vector specifying the names of the variables to be rounded. All specified variables must exist in \code{orig_data}.}
 
-\item{round_cond}{Rounding Base}
+\item{round_cond}{A single positive whole integer greater than 1 indicating the rounding base.}
 }
 \value{
-rounded_data Disclosed Data with Rounding Applied
+A data frame with the selected variables rounded to the specified base. Non-numeric variables are not modified.
 }
 \description{
-Performs rounding on selected variables within a dataset to a chosen base
+This function rounds specified numeric variables within a dataset to a chosen base.
 }
 \examples{
+# Example dataset
 inp_data <- dummy_wide
+
+# Variables to be rounded
 r_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+
+# Rounding base
 r_base <- 3
+
+# Apply rounding
 r_data <- Stat_Round(inp_data, r_vars, r_base)
+
+# View original data
 inp_data
+
+# View rounded data
 r_data
 }

@@ -17,7 +17,7 @@ shiny::tabPanel("Rounding",
                   # Input Definitions
                   shiny::sidebarPanel(
                     shiny::selectInput("Disc_Variables_Round", label = "Choose Variables to Round:", choices = "", multiple = TRUE), # Choose Variables to Round
-                    shiny::numericInput("Round_Cond","Condition for Rounding", value = 10, min = 1, max = 1000), # Select Rounding Condition
+                    shiny::numericInput("Round_Cond","Condition for Rounding", value = 10, min = 2, max = 1000), # Select Rounding Condition
                     shiny::br(), # New Line
                     shiny::h5(shiny::strong("Rounding")), # Heading indicating Rounding Button
                     shiny::actionButton("rounding", "Round"), # Button to round data

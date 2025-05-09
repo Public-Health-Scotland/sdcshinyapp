@@ -2,34 +2,55 @@
 % Please edit documentation in R/disclosure_functions.R
 \name{Stat_Primary_Supress}
 \alias{Stat_Primary_Supress}
-\title{Stat_Primary_Supress Function}
+\title{Perform Primary Suppression on Selected Variables}
 \usage{
-Stat_Primary_Supress(orig_data, var_choice, char_supp, sup_cond, zero)
+Stat_Primary_Supress(
+  orig_data,
+  var_choice,
+  char_supp = "*",
+  sup_cond,
+  zero = TRUE
+)
 }
 \arguments{
-\item{orig_data}{Input Data to be disclosed}
+\item{orig_data}{A data frame or tibble containing the input data to have primary suppression applied.}
 
-\item{var_choice}{Choice of variables to be suppressed}
+\item{var_choice}{A character vector specifying the names of the variables to be rounded. All specified variables must exist in orig_data.}
 
-\item{char_supp}{Character used to indicate suppression}
+\item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
 
-\item{sup_cond}{Values equal to or below this value will be suppressed}
+\item{sup_cond}{A single positive integer. Values equal to or below this threshold will be suppressed.}
 
-\item{zero}{Indicates if 0 should be suppressed}
+\item{zero}{A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.}
 }
 \value{
-Disclosed Data with Primary Suppression Applied
+A data frame or tibble with primary suppression applied to the specified variables. Original NA values are preserved.
 }
 \description{
-Performs Primary Suppression on selected variables within a Dataset
+This function applies primary suppression to specified variables within a dataset. Values equal to or below a given threshold are replaced with a suppression character.
 }
 \examples{
+# Example dataset
 inp_data <- dummy_wide
+
+# Variables for primary suppression
 ps_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
+
+# Suppression character
 ps_char <- "*"
-ps_cond <- "3"
+
+# Suppression condition
+ps_cond <- 3
+
+# Suppress zeros
 z_cond <- TRUE
+
+# Apply suppression
 ps_data <- Stat_Primary_Supress(inp_data, ps_vars, ps_char, ps_cond, z_cond)
+
+# View original data
 inp_data
+
+# View suppressed data
 ps_data
 }

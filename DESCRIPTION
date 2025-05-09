@@ -26,6 +26,7 @@ Imports:
     shinyalert,
     sparkline,
     stringr,
+    tibble,
     tidyr,
     utils
 Suggests: 

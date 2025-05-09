@@ -2,28 +2,39 @@
 % Please edit documentation in R/disclosure_functions.R
 \name{Stat_Swap}
 \alias{Stat_Swap}
-\title{Stat_Swap Function}
+\title{Swap Selected Variables in a Dataset}
 \usage{
 Stat_Swap(orig_data, var_choice, swap_cond)
 }
 \arguments{
-\item{orig_data}{Input Data to be disclosed}
+\item{orig_data}{A dataframe or tibble containing the input data to be swapped.}
 
-\item{var_choice}{Choice of variables to be swapped}
+\item{var_choice}{A character vector specifying the names of the variables to be swapped. These variables must exist in \code{orig_data}.}
 
-\item{swap_cond}{Swapping condtion meaning values below this in a dataset must be swapped}
+\item{swap_cond}{A single positive whole integer indicating the swapping condition. Values equal to or below this threshold in the specified variables will be swapped.}
 }
 \value{
-Disclosed Data with Swapping Applied
+A dataframe or tibble with the swapping applied to the selected variables.  The original data is returned if no numeric variables are selected.
 }
 \description{
-Performs rounding on selected variables within a Dataset
+Performs swapping on selected variables within a dataset by swapping values that are below a specified condition.
 }
 \examples{
+# Example dataset
 inp_data <- dummy_wide
+
+# Variables for swapping
 s_vars <- c("20-24", "25-29", "30-34", "35-39", "40-44", "45-49", "50-54", "55-59", "Total")
-s_cond <- 3
+
+# Swapping condition
+s_cond <- 5
+
+# Apply Swapping
 s_data <- Stat_Swap(inp_data, s_vars, s_cond)
+
+# View original data
 inp_data
+
+# View swapped data
 s_data
 }

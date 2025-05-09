@@ -30,32 +30,42 @@ shiny::observe({
 ## 1. Rounding Selected Variables ----
 shiny::observeEvent(input$rounding, {
 
-    # Stop if variables are not selected
-    if (is.null(input$Disc_Variables_Round)){
+  # Check if any variables are selected for rounding
+  if (is.null(input$Disc_Variables_Round)) {
 
-      # Error Notification
-      shinyalert(title = "There is no input variables selected",
-                 text = "Please select input variables.",
-                 type = "error")
+    # Display an error notification if no variables are selected
+    shinyalert::shinyalert(title = "There is no input variables selected",
+                           text = "Please select input variables.",
+                           type = "error")
 
-      # Validation
-      shiny::validate(shiny::need(!is.null(input$Disc_Variables_Round), "There is no variables selected for rounding"))
+    # Validate to stop further execution if no variables are selected
+    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Round), "There is no variables selected for rounding"))
 
-      }
+  } else {
 
-  # Success Notification
-  shinyalert::shinyalert(title = "Data successfully rounded.", type = "success")
+    # Check if Rounding Condition is a whole, positive integer greater than one
+    if (!is.numeric(input$Round_Cond) || input$Round_Cond <= 1 || input$Round_Cond %% 1 != 0) {
 
-  # Store Non-Rounded Data
-  shiny::isolate({temp_round <- App_data$values})
+      # Display an error notification if Rounding Condition is not valid
+      shinyalert::shinyalert(title = "Invalid rounding condition",
+                             text = "Please enter a whole, positive integer greater than one for the rounding condition.",
+                             type = "error")
 
-  # Round Data
-  App_data$values <- sdcshinyapp::Stat_Round(temp_round, input$Disc_Variables_Round,input$Round_Cond)
+      # Validate to stop further execution if Rounding Condition is not valid
+      shiny::validate(shiny::need(is.numeric(input$Round_Cond) && input$Round_Cond > 1 && input$Round_Cond %% 1 == 0, "Invalid rounding condition"))
 
-  # Clear Non-Rounded Data
-  temp_round <- NULL
+    } else {
 
-  })
+      # Display a success notification if variables are selected and Rounding Condition is valid
+      shinyalert::shinyalert(title = "Data successfully rounded.", type = "success")
+
+      # Perform the rounding operation on the selected variables
+      App_data$values <- sdcshinyapp::Stat_Round(App_data$values, input$Disc_Variables_Round, input$Round_Cond)
+
+    }
+  }
+})
+
 
 # 3. Data Visualisation ----
 

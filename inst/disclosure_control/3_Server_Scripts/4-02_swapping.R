@@ -10,7 +10,7 @@
 
 # 1. Update variable select option ----
 
-## 1. Variable updates of select input box ----
+## 1. Swapping
 shiny::observe({
 
   # Variable Options
@@ -18,47 +18,51 @@ shiny::observe({
 
   # Update Selectbox
   shiny::updateSelectInput(session, "Disc_Variables_Swap",
-                    label = "Choose Variables to Swap:",
-                    choices = cb_options,
-                    selected = "")
-
+                           label = "Choose Variables to Swap:",
+                           choices = cb_options,
+                           selected = "")
   })
-
 
 # 2. Swap Variables ----
 
-
-## 1. Swap Selected Variables ----
+## 1. Swapping Selected Variables ----
 shiny::observeEvent(input$swapping, {
 
-  # Stop if variables not selected
-  if (is.null(input$Disc_Variables_Swap)){
+  # Check if any variables are selected for swapping
+  if (is.null(input$Disc_Variables_Swap)) {
 
-    # Error Notification
-    shinyalert::shinyalert(title = "There is no input variables selected",
+    # Display an error notification if no variables are selected
+    shinyalert::shinyalert(title = "No Input Variables Selected",
                            text = "Please select input variables.",
                            type = "error")
 
-    # Validation
-    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Swap), "There is no variables selected for record swapping"))
+    # Validate to stop further execution if no variables are selected
+    shiny::validate(shiny::need(!is.null(input$Disc_Variables_Swap), "No input variables selected"))
+
+  } else {
+
+    # Check if swapping condition is a whole, positive integer greater than one
+    if (!is.numeric(input$Swap_Cond) || input$Swap_Cond < 1 || input$Swap_Cond %% 1 != 0) {
+
+      # Display an error notification if the swapping condition is not valid
+      shinyalert::shinyalert(title = "Invalid Swapping Condition",
+                             text = "Please enter a whole, positive integer for the swapping condition.",
+                             type = "error")
+
+      # Validate to stop further execution if the swapping condition is not valid
+      shiny::validate(shiny::need(is.numeric(input$Swap_Cond) && input$Swap_Cond > 0 && input$Swap_Cond %% 1 == 0, "Invalid swapping condition"))
+
+    } else {
+
+      # Display a success notification if variables are selected and swapping condition is valid
+      shinyalert::shinyalert(title = "Data Successfully Swapped", type = "success")
+
+      # Perform the swapping operation on the selected variables
+      App_data$values <- sdcshinyapp::Stat_Swap(App_data$values, input$Disc_Variables_Swap, input$Swap_Cond)
 
     }
-
-  # Success Notification
-  shinyalert::shinyalert(title = "Record Swapping successful.",
-                         type = "success")
-
-  # Store Non-Swapped Data
-  shiny::isolate({temp_swap <- App_data$values})
-
-  # Swap Data
-  App_data$values <- sdcshinyapp::Stat_Swap(temp_swap, input$Disc_Variables_Swap, input$Swap_Cond)
-
-  # Clear Non-Swapped Data
-  temp_swap <- NULL
-
-  })
-
+  }
+})
 
 # 3. Data Visualisation ----
 
