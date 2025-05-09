@@ -59,7 +59,7 @@ swap_sample_data <- data.frame(
   B = c(10, 20, 30, 40, 50, NA),
   C = c("a", "b", "c", "d", "e", "f"),
   check.names = FALSE, stringsAsFactors = FALSE
-  )
+)
 
 
 test_that("Stat_Swap handles missing or invalid orig_data", {
@@ -102,7 +102,7 @@ ps_sample_data <- data.frame(
   `55-59` = c(1, 2, 3, 4, 5),
   `Total` = c(8, 15, 21, 27, 33),
   check.names = FALSE, stringsAsFactors = FALSE
-  )
+)
 
 test_that("Function handles non-dataframe input", {
   expect_error(Stat_Primary_Supress(NULL, c("20-24"), "*", 3, TRUE), "Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
@@ -158,7 +158,7 @@ test_that("Stat_Secondary_Supress works correctly", {
     `50-54` = c(1, 2, 3, 4, 5, NA),
     `55-59` = c(1, 2, 3, 4, 5, NA),
     check.names = FALSE, stringsAsFactors = FALSE
-    )
+  )
 
   # Variables for primary suppression
   ps_vars <- "Total"

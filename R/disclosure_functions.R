@@ -41,47 +41,45 @@
 #' # View rounded data
 #' r_data
 Stat_Round <- function(orig_data, var_choice, round_cond) {
+  # Validate input arguments
+  if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
+    stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
+  }
 
-# Validate input arguments
-if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
-  stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
-}
+  if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
+    stop("Error: 'var_choice' must be a non-empty character vector and all columns must exist in 'orig_data'.")
+  }
 
-if (!is.character(var_choice) || length(var_choice) == 0 || !all(var_choice %in% colnames(orig_data))) {
-  stop("Error: 'var_choice' must be a non-empty character vector and all columns must exist in 'orig_data'.")
-}
+  if (!is.numeric(round_cond) || length(round_cond) != 1 || round_cond <= 1 || round_cond %% 1 != 0) {
+    stop("Error: 'round_cond' must be a single positive whole integer greater than 1.")
+  }
 
-if (!is.numeric(round_cond) || length(round_cond) != 1 || round_cond <= 1 || round_cond %% 1 != 0) {
-  stop("Error: 'round_cond' must be a single positive whole integer greater than 1.")
-}
+  # Replace NA values with a high value (999999999) to avoid issues during rounding
+  r_data <- orig_data |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ tidyr::replace_na(., 999999999)))
 
-# Replace NA values with a high value (999999999) to avoid issues during rounding
-r_data <- orig_data |>
-  dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ tidyr::replace_na(., 999999999)))
+  # Determine the value to replace NA after rounding
+  rounding_NA_value <- plyr::round_any(999999999, round_cond, round)
 
-# Determine the value to replace NA after rounding
-rounding_NA_value <- plyr::round_any(999999999, round_cond, round)
+  # Identify variables that are whole numbers
+  num_var_choice <- var_choice[sapply(r_data[var_choice], DistributionUtils::is.wholenumber)]
 
-# Identify variables that are whole numbers
-num_var_choice <- var_choice[sapply(r_data[var_choice], DistributionUtils::is.wholenumber)]
+  # Return original data if no numeric variables are selected
+  if (length(num_var_choice) == 0) {
+    warning("No numeric variables have been selected. The original input data will be returned.")
+    return(orig_data)
+  }
 
-# Return original data if no numeric variables are selected
-if (length(num_var_choice) == 0) {
-  warning("No numeric variables have been selected. The original input data will be returned.")
-  return(orig_data)
-}
+  # Round the selected variables to the specified base
+  r_data <- r_data |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(num_var_choice), ~ plyr::round_any(., round_cond, round)))
 
-# Round the selected variables to the specified base
-r_data <- r_data |>
-  dplyr::mutate(dplyr::across(dplyr::all_of(num_var_choice), ~ plyr::round_any(., round_cond, round)))
+  # Restore NA values in the rounded data
+  r_data <- r_data |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::na_if(., rounding_NA_value)))
 
-# Restore NA values in the rounded data
-r_data <- r_data |>
-  dplyr::mutate(dplyr::across(dplyr::all_of(var_choice), ~ dplyr::na_if(., rounding_NA_value)))
-
-# Return the rounded data
-return(r_data)
-
+  # Return the rounded data
+  return(r_data)
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -114,7 +112,6 @@ return(r_data)
 #' # View swapped data
 #' s_data
 Stat_Swap <- function(orig_data, var_choice, swap_cond) {
-
   # Validate input arguments
   if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
     stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
@@ -150,13 +147,11 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 
   # Process each numeric column
   for (var in num_var_choice) {
-
     # Get position in column, which are <= swap_cond
     chk_indices <- which(swapped_data[[var]] <= swap_cond)
 
     # Only perform swap if more than one value in column <= swap_cond
     if (length(chk_indices) > 1) {
-
       swap_indices <- sample(chk_indices)
 
       # Ensure Swapping always occurs
@@ -173,7 +168,6 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
   swapped_data[, var_choice][swapped_data[, var_choice] == 999999999] <- NA
 
   return(swapped_data)
-
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
@@ -214,7 +208,6 @@ Stat_Swap <- function(orig_data, var_choice, swap_cond) {
 #' # View suppressed data
 #' ps_data
 Stat_Primary_Supress <- function(orig_data, var_choice, char_supp = "*", sup_cond, zero = TRUE) {
-
   # Validate input arguments
   if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
     stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
@@ -308,7 +301,6 @@ Stat_Primary_Supress <- function(orig_data, var_choice, char_supp = "*", sup_con
 #' # View suppressed data
 #' s_data
 Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, char_supp = "*", sup_cond, zero = TRUE) {
-
   ## Validate input arguments ----
   if (missing(orig_data) || is.null(orig_data) || (!is.data.frame(orig_data) && !tibble::is_tibble(orig_data))) {
     stop("Error: 'orig_data' must be provided, cannot be NULL, and must be a dataframe or tibble.")
@@ -439,7 +431,6 @@ Stat_Secondary_Supress <- function(orig_data, pri_var_choice, sec_var_choice, ch
 
   # Secondary Suppressed Data
   return(ss_data)
-
 }
 
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
