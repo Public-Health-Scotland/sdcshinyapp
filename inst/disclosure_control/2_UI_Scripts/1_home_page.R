@@ -9,7 +9,6 @@
 # Home Tab UI ----
 shiny::tabPanel(
   title = "Home",
-
   shiny::navlistPanel(
     id = "tabset",
     widths = sb_width,

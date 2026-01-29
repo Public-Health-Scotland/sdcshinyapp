@@ -8,7 +8,6 @@
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-
 # 1. Table Rendering ----
 
 #' Table_Render
@@ -52,7 +51,7 @@ SelectBox_Update <- function(SDC_data) {
   shiny::req(SDC_data)
 
   dsnames <- names(SDC_data) # Extracts Column Names
-  dsnames <- dsnames[!dsnames %in% c("Serial")] # Remove Serial Number Option
+  dsnames <- dsnames[!dsnames %in% "Serial"] # Remove Serial Number Option
 
   # Select column names as options for checkbox
   cb_options <- list()

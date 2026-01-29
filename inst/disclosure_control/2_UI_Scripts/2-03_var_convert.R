@@ -10,7 +10,6 @@
 shiny::tabPanel(
   "Variable Conversion",
   shiny::fluidRow(
-
     # Input Panel
     shiny::column(
       width = 3,
@@ -21,11 +20,9 @@ shiny::tabPanel(
         multiple = FALSE
       ),
       shiny::br(),
-
       shiny::h5(shiny::strong("Convert Character Variable to Numeric")),
       shiny::actionButton("char_to_num", "Convert"),
       shiny::br(),
-
       shiny::h5(shiny::strong("Convert Numeric Variable to Character")),
       shiny::actionButton("num_to_char", "Convert")
     ),

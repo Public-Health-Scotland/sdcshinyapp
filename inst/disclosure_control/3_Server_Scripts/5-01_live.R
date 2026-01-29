@@ -33,7 +33,6 @@ output$downloadData <- shiny::downloadHandler(
     shiny::validate(shiny::need(App_data$values, "There is no input data"))
     paste0("SDC_", input$upload$name)
   },
-
   content = function(fname) {
     shiny::validate(shiny::need(App_data$values, "There is no input data"))
     Final <- App_data$values
@@ -42,10 +41,13 @@ output$downloadData <- shiny::downloadHandler(
 
     if (file_type == "text/csv") {
       utils::write.csv(Final, fname, row.names = FALSE)
-    } else if (file_type %in% c(
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "application/vnd.ms-excel"
-    )) {
+    } else if (
+      file_type %in%
+        c(
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/vnd.ms-excel"
+        )
+    ) {
       Final <- as.data.frame(Final)
       openxlsx::write.xlsx(Final, fname, row.names = FALSE)
     } else {

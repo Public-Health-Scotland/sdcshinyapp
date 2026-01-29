@@ -29,10 +29,13 @@ shiny::tabPanel(
       shiny::br(),
       shiny::h5(shiny::strong("Record Swapping")),
       shiny::actionButton("swapping", "Swap"),
-      shiny::br(), shiny::br(), shiny::br(),
-
+      shiny::br(),
+      shiny::br(),
+      shiny::br(),
       shiny::h4("Swapping Information"),
-      shiny::p("For record swapping, all numbers in the selected variables less than or equal to the swapping condition are swapped.")
+      shiny::p(
+        "For record swapping, all numbers in the selected variables less than or equal to the swapping condition are swapped."
+      )
     ),
 
     # Output Definitions

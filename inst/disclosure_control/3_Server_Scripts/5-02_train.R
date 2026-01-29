@@ -9,7 +9,10 @@
 # 1. Data Reset ----
 shiny::observeEvent(input$training_dat_reset, {
   if (is.null(trainingdata())) {
-    shinyalert::shinyalert("Error: No input data available to reset.", type = "error")
+    shinyalert::shinyalert(
+      "Error: No input data available to reset.",
+      type = "error"
+    )
     return(NULL)
   }
 
@@ -29,6 +32,5 @@ shiny::observeEvent(input$training_dat_reset, {
   variable_value_header$header <- NULL
   key_value_options$data <- NULL
 })
-
 
 # END OF SCRIPT ----

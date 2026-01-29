@@ -9,7 +9,9 @@ dummy_wide <- data.frame(
   `45-49` = c(3, 9, 39),
   `50-54` = c(14, 3, 28),
   `55-59` = c(10, 11, 27),
-  `Total` = c(86, 44, 222), check.names = FALSE, stringsAsFactors = FALSE
+  `Total` = c(86, 44, 222),
+  check.names = FALSE,
+  stringsAsFactors = FALSE
 )
 
 # Write out data

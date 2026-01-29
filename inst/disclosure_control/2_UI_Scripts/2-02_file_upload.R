@@ -10,7 +10,6 @@
 shiny::tabPanel(
   "File Upload",
   shiny::fluidRow(
-
     # Input Panel
     shiny::column(
       width = 3,

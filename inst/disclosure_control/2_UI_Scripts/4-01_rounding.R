@@ -28,10 +28,13 @@ shiny::tabPanel(
       shiny::br(),
       shiny::h5(shiny::strong("Rounding")),
       shiny::actionButton("rounding", "Round"),
-      shiny::br(), shiny::br(), shiny::br(),
-
+      shiny::br(),
+      shiny::br(),
+      shiny::br(),
       shiny::h4("Rounding Information"),
-      shiny::p("For rounding, all selected variables are rounded to the base set in the Condition for Rounding box.")
+      shiny::p(
+        "For rounding, all selected variables are rounded to the base set in the Condition for Rounding box."
+      )
     ),
 
     # Output Definitions

@@ -21,11 +21,22 @@ shiny::observe({
 # 2. Swapping Logic ----
 shiny::observeEvent(input$swapping, {
   if (is.null(input$Disc_Variables_Swap)) {
-    shinyalert::shinyalert("No Input Variables Selected", "Please select input variables.", type = "error")
-    shiny::validate(shiny::need(input$Disc_Variables_Swap, "No input variables selected"))
+    shinyalert::shinyalert(
+      "No Input Variables Selected",
+      "Please select input variables.",
+      type = "error"
+    )
+    shiny::validate(shiny::need(
+      input$Disc_Variables_Swap,
+      "No input variables selected"
+    ))
   }
 
-  if (!is.numeric(input$Swap_Cond) || input$Swap_Cond < 1 || input$Swap_Cond %% 1 != 0) {
+  if (
+    !is.numeric(input$Swap_Cond) ||
+      input$Swap_Cond < 1 ||
+      input$Swap_Cond %% 1 != 0
+  ) {
     shinyalert::shinyalert(
       "Invalid Swapping Condition",
       "Please enter a whole, positive integer for the swapping condition.",
@@ -45,7 +56,7 @@ shiny::observeEvent(input$swapping, {
 
 # 3. Data Visualisation ----
 output$Swapped_data <- DT::renderDataTable({
-  cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
+  cb <- htmlwidgets::JS("function(){debugger;HTMLWidgets.staticRender();}")
   sdcshinyapp::Table_Render(App_data$values, cb)
 })
 

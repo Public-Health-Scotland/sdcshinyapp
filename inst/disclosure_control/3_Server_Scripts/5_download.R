@@ -8,7 +8,7 @@
 
 # 1. Data Visualisation ----
 output$Final_data <- DT::renderDataTable({
-  cb <- htmlwidgets::JS('function(){debugger;HTMLWidgets.staticRender();}')
+  cb <- htmlwidgets::JS("function(){debugger;HTMLWidgets.staticRender();}")
   sdcshinyapp::Table_Render(App_data$values, cb)
 })
 

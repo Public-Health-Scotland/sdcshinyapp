@@ -7,8 +7,8 @@
 Stat_Primary_Supress(
   orig_data,
   var_choice,
-  char_supp = "*",
   sup_cond,
+  char_supp = "*",
   zero = TRUE
 )
 }
@@ -17,9 +17,9 @@ Stat_Primary_Supress(
 
 \item{var_choice}{A character vector specifying the names of the variables to be rounded. All specified variables must exist in orig_data.}
 
-\item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
-
 \item{sup_cond}{A single positive integer. Values equal to or below this threshold will be suppressed.}
+
+\item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
 
 \item{zero}{A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.}
 }

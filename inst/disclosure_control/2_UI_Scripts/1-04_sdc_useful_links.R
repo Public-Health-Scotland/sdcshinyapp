@@ -12,7 +12,6 @@ shiny::tabPanel(
   shiny::fluidRow(
     shiny::mainPanel(
       shiny::h2("Useful Public Health Scotland Links"),
-
       shiny::p(
         "For further information, please see the ",
         shiny::a(
@@ -21,7 +20,6 @@ shiny::tabPanel(
         ),
         " page on The Spark."
       ),
-
       shiny::p(
         "Always complete your ",
         shiny::a(

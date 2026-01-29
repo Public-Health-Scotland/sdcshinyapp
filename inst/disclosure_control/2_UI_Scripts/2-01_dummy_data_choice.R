@@ -10,7 +10,6 @@
 shiny::tabPanel(
   "Training Data",
   shiny::fluidRow(
-
     # Input Panel
     shiny::column(
       width = 3,
@@ -31,7 +30,9 @@ shiny::tabPanel(
       shiny::h2(shiny::strong("Data Summary")),
       shiny::verbatimTextOutput("Train_summary_dist"),
       shiny::br(),
-      shiny::h2(shiny::strong("Percentage of Missing Values for each Variable")),
+      shiny::h2(shiny::strong(
+        "Percentage of Missing Values for each Variable"
+      )),
       shiny::verbatimTextOutput("Train_summary_missing")
     )
   )

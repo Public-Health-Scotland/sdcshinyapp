@@ -16,7 +16,9 @@ shiny::tabPanel(
 
       # Rounding ----
       shiny::h2("Rounding"),
-      shiny::p("Rounding adjusts cell values to a specified base, introducing uncertainty while preserving overall structure. It protects against disclosure by differencing."),
+      shiny::p(
+        "Rounding adjusts cell values to a specified base, introducing uncertainty while preserving overall structure. It protects against disclosure by differencing."
+      ),
       shiny::br(),
       shiny::h4("Pros"),
       shiny::p("\u2022 Protects large tables without altering structure"),
@@ -33,7 +35,9 @@ shiny::tabPanel(
 
       # Record Swapping ----
       shiny::h2("Record Swapping"),
-      shiny::p("Swapping exchanges attributes (e.g., geography) between records to protect identities. It maintains internal consistency but alters geographic distributions."),
+      shiny::p(
+        "Swapping exchanges attributes (e.g., geography) between records to protect identities. It maintains internal consistency but alters geographic distributions."
+      ),
       shiny::br(),
       shiny::h4("Pros"),
       shiny::p("\u2022 Protects against differencing"),
@@ -49,7 +53,9 @@ shiny::tabPanel(
 
       # Suppression ----
       shiny::h2("Suppression"),
-      shiny::p("Suppresses unsafe cells by replacing them with a symbol. Secondary suppressions are added to prevent deduction from totals."),
+      shiny::p(
+        "Suppresses unsafe cells by replacing them with a symbol. Secondary suppressions are added to prevent deduction from totals."
+      ),
       shiny::br(),
       shiny::h4("Pros"),
       shiny::p("\u2022 Leaves safe data unchanged"),
@@ -64,13 +70,17 @@ shiny::tabPanel(
 
       # Table Redesign ----
       shiny::h2("Table Redesign"),
-      shiny::p("Manual method not available in the app. Involves restructuring tables to reduce disclosure risk."),
+      shiny::p(
+        "Manual method not available in the app. Involves restructuring tables to reduce disclosure risk."
+      ),
       shiny::br(),
       shiny::p("\u2022 Group or collapse categories"),
       shiny::p("\u2022 Aggregate to higher geographies or larger groups"),
       shiny::p("\u2022 Combine data across time periods"),
       shiny::br(),
-      shiny::p("Unsafe categories should be merged with similar ones to minimise data distortion. Consider consistency across tables and historical comparisons. Redesign can be applied selectively to sub-tables.")
+      shiny::p(
+        "Unsafe categories should be merged with similar ones to minimise data distortion. Consider consistency across tables and historical comparisons. Redesign can be applied selectively to sub-tables."
+      )
     )
   )
 )

@@ -8,8 +8,8 @@ Stat_Secondary_Supress(
   orig_data,
   pri_var_choice,
   sec_var_choice,
-  char_supp = "*",
   sup_cond,
+  char_supp = "*",
   zero = TRUE
 )
 }
@@ -20,9 +20,9 @@ Stat_Secondary_Supress(
 
 \item{sec_var_choice}{A character vector specifying the variables to be suppressed using secondary suppression. All specified variables must exist in orig_data and at least two variables must be selected.}
 
-\item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
-
 \item{sup_cond}{A numeric value; values equal to or below this threshold will be suppressed. For secondary suppression, the next lowest number in a row will be suppression if only one secondary values has been suppressed.}
+
+\item{char_supp}{A character used to indicate suppression. Default is \code{*}. Must be either \code{*} or \code{c}.}
 
 \item{zero}{A single logical value indicating whether zero should be suppressed. Default is TRUE. If TRUE, zero values will remain un-suppressed.}
 }

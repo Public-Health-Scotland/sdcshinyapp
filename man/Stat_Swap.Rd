@@ -7,14 +7,14 @@
 Stat_Swap(orig_data, var_choice, swap_cond)
 }
 \arguments{
-\item{orig_data}{A dataframe or tibble containing the input data to be swapped.}
+\item{orig_data}{A data.frame or tibble containing the input data to be swapped.}
 
 \item{var_choice}{A character vector specifying the names of the variables to be swapped. These variables must exist in \code{orig_data}.}
 
 \item{swap_cond}{A single positive whole integer indicating the swapping condition. Values equal to or below this threshold in the specified variables will be swapped.}
 }
 \value{
-A dataframe or tibble with the swapping applied to the selected variables.  The original data is returned if no numeric variables are selected.
+A data.frame or tibble with the swapping applied to the selected variables.  The original data is returned if no numeric variables are selected.
 }
 \description{
 Performs swapping on selected variables within a dataset by swapping values that are below a specified condition.

@@ -17,7 +17,6 @@ ui <- shiny::fluidPage(
       ),
       style = "position: relative; top: -10px;"
     ),
-
     windowTitle = "Statistical Disclosure",
 
     # Include CSS for App theme
@@ -26,11 +25,11 @@ ui <- shiny::fluidPage(
     ),
 
     # Tabs
-    source("2_UI_Scripts/1_home_page.R", local = TRUE)$value,         # SDC Home Page
-    source("2_UI_Scripts/2_data_input.R", local = TRUE)$value,        # Data Input Tab
+    source("2_UI_Scripts/1_home_page.R", local = TRUE)$value, # SDC Home Page
+    source("2_UI_Scripts/2_data_input.R", local = TRUE)$value, # Data Input Tab
     source("2_UI_Scripts/3_filtering_formatting.R", local = TRUE)$value, # Filtering/Formatting Tab
-    source("2_UI_Scripts/4_disclosure_methods.R", local = TRUE)$value,   # Disclosure Methods Tab
-    source("2_UI_Scripts/5_download.R", local = TRUE)$value           # Download Tab
+    source("2_UI_Scripts/4_disclosure_methods.R", local = TRUE)$value, # Disclosure Methods Tab
+    source("2_UI_Scripts/5_download.R", local = TRUE)$value # Download Tab
   )
 )
 

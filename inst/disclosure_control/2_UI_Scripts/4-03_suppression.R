@@ -42,15 +42,14 @@ shiny::tabPanel(
       shiny::h5(shiny::strong("Choose if zeros should not be suppressed")),
       shiny::checkboxInput("zero_sup", label = "No zero suppression"),
       shiny::br(),
-
       shiny::h5(shiny::strong("Primary Suppression")),
       shiny::actionButton("pri_sup", "Suppression"),
       shiny::br(),
-
       shiny::h5(shiny::strong("Primary & Secondary Suppression")),
       shiny::actionButton("pri_sec_sup", "Suppression"),
-      shiny::br(), shiny::br(), shiny::br(),
-
+      shiny::br(),
+      shiny::br(),
+      shiny::br(),
       shiny::h4("Suppression Information"),
       shiny::p(
         "For suppression, all numbers in the selected variables less than or equal to the suppression condition are suppressed. ",

@@ -10,8 +10,7 @@
 
 # Reactive expression to select training data
 trainingdata <- shiny::reactive({
-  switch(
-    input$train_data_select,
+  switch(input$train_data_select,
     "Wide Data" = sdcshinyapp::dummy_wide,
     "Long Data" = sdcshinyapp::dummy_long
   )

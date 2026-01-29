@@ -16,10 +16,10 @@ data <- shiny::reactive({
   ext <- tools::file_ext(inFile$name)
 
   switch(ext,
-         csv  = dplyr::as_tibble(readr::read_csv(inFile$datapath)),
-         xlsx = readxl::read_excel(inFile$datapath),
-         xls  = readxl::read_xls(inFile$datapath),
-         shiny::validate("Invalid file; please upload a .csv, .xlsx, or .xls file")
+    csv = dplyr::as_tibble(readr::read_csv(inFile$datapath)),
+    xlsx = readxl::read_excel(inFile$datapath),
+    xls = readxl::read_xls(inFile$datapath),
+    shiny::validate("Invalid file; please upload a .csv, .xlsx, or .xls file")
   )
 })
 
@@ -32,7 +32,6 @@ App_data <- shiny::reactiveValues(values = NULL)
 shiny::observe({
   # Reset trainingdata() only if data() is available
   if (!is.null(data())) {
-
     # Assign uploaded data with Serial column
     App_data$values <- data() |>
       dplyr::mutate(Serial = dplyr::row_number()) |>

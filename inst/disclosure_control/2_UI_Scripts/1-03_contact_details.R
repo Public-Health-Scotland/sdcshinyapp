@@ -15,12 +15,16 @@ shiny::tabPanel(
 
       # Statistical Governance
       shiny::h2("Statistical Governance"),
-      shiny::p("For questions or issues related to statistical disclosure control, contact Statistical Governance at:"),
+      shiny::p(
+        "For questions or issues related to statistical disclosure control, contact Statistical Governance at:"
+      ),
       shiny::p("phs.statsgov@phs.scot"),
 
       # CHI Linkage (CHILI Team)
       shiny::h2("CHI Linkage"),
-      shiny::p("For technical queries or questions about this app, contact CHI Linkage at:"),
+      shiny::p(
+        "For technical queries or questions about this app, contact CHI Linkage at:"
+      ),
       shiny::p("phs.chi-recordlinkage@phs.scot")
     )
   )

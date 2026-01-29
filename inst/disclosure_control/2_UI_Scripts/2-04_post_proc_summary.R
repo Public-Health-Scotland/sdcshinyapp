@@ -16,7 +16,9 @@ shiny::tabPanel(
       shiny::h2(shiny::strong("Data Summary")),
       shiny::verbatimTextOutput("process_summary_dist"),
       shiny::br(),
-      shiny::h2(shiny::strong("Percentage of Missing Values for each Variable")),
+      shiny::h2(shiny::strong(
+        "Percentage of Missing Values for each Variable"
+      )),
       shiny::verbatimTextOutput("process_missing")
     )
   )

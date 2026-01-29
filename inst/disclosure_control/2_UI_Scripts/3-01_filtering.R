@@ -15,17 +15,14 @@ shiny::tabPanel(
       shiny::h5(shiny::strong("Store Unprocessed Data")),
       shiny::actionButton("Unprocess_Store", "Store"),
       shiny::br(),
-
       shiny::h5(shiny::strong("Filter Data")),
       shiny::actionButton("addFilter", "Add filter"),
       shiny::div(id = "placeholderAddRemFilt"),
       shiny::div(id = "placeholderFilter"),
       shiny::br(),
-
       shiny::h5(shiny::strong("Store Filtered Data")),
       shiny::actionButton("store_data", "Store"),
       shiny::br(),
-
       shiny::h5(shiny::strong("Re-add Filtered Data Back In")),
       shiny::actionButton("re_add_data", "Re-add")
     ),
